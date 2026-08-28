@@ -29,6 +29,10 @@ final class BrandingAssetController extends Controller
 
     private const THEME_ASSETS = ['hero', 'auth', 'empty'];
 
+    private const STATIC_ASSET_MAX_AGE = 3600;
+
+    private const FALLBACK_ASSET_MAX_AGE = 300;
+
     private string $brandingRoot;
 
     private string $legacyFaviconPath;
@@ -97,17 +101,17 @@ final class BrandingAssetController extends Controller
     {
         $customAsset = $this->brandingRoot . DIRECTORY_SEPARATOR . str_replace('/', DIRECTORY_SEPARATOR, $asset);
         if (is_file($customAsset)) {
-            return response()->file($customAsset, $this->headers($mimeType, 31536000));
+            return response()->file($customAsset, $this->headers($mimeType, self::STATIC_ASSET_MAX_AGE));
         }
 
         if ($asset === 'favicon.ico' && is_file($this->legacyFaviconPath)) {
-            return response()->file($this->legacyFaviconPath, $this->headers($mimeType, 300));
+            return response()->file($this->legacyFaviconPath, $this->headers($mimeType, self::FALLBACK_ASSET_MAX_AGE));
         }
 
         return response(
             $fallback,
             200,
-            $this->headers($mimeType, 300),
+            $this->headers($mimeType, self::FALLBACK_ASSET_MAX_AGE),
         );
     }
 

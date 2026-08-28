@@ -128,7 +128,7 @@ final class SiteTheme
         }
 
         $directory = $this->themeDirectory($theme);
-        $entryPath = $directory . DIRECTORY_SEPARATOR . 'index.blade.php';
+        $entryPath = $this->entryPath($theme);
         $configPath = $directory . DIRECTORY_SEPARATOR . 'config.json';
 
         if (! is_dir($directory) || ! is_file($entryPath) || ! is_file($configPath)) {
@@ -196,7 +196,7 @@ final class SiteTheme
     }
 
     /**
-     * @return array{id: string, runtimeId: string, view: string}|null
+     * @return array{id: string, runtimeId: string, view: string, viewPath: string}|null
      */
     public function resolve(mixed $requested): ?array
     {
@@ -209,6 +209,10 @@ final class SiteTheme
             'id' => $directoryTheme,
             'runtimeId' => self::isRuntimeTheme($directoryTheme) ? $directoryTheme : self::DEFAULT,
             'view' => $this->viewName($directoryTheme),
+            // Laravel's named view finder treats dots as path separators. Keep
+            // the conventional view name for callers, but render this verified
+            // entry path so third-party directory IDs such as "theme.v2" work.
+            'viewPath' => $this->entryPath($directoryTheme),
         ];
     }
 
@@ -228,5 +232,10 @@ final class SiteTheme
     private function themeDirectory(string $theme): string
     {
         return $this->themeRoot . DIRECTORY_SEPARATOR . $theme;
+    }
+
+    private function entryPath(string $theme): string
+    {
+        return $this->themeDirectory($theme) . DIRECTORY_SEPARATOR . 'index.blade.php';
     }
 }

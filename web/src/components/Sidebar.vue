@@ -27,7 +27,7 @@ import {useI18n} from "vue-i18n";
 const { t } = useI18n()
 
 function renderIcon(icon: Component) {
-  return () => h(NIcon, {color: '#0094c5'}, {default: () => h(icon)})
+  return () => h(NIcon, {color: 'var(--theme-primary, #0094c5)'}, {default: () => h(icon)})
 }
 
 const menuOptions = computed<MenuOption[]>(() => {

@@ -16,6 +16,7 @@ const GENERATED_ASSETS_DIR = path.join(PROJECT_ROOT, 'web/src/assets/generated')
 const FILAMENT_THEME_CSS = path.join(PROJECT_ROOT, 'resources/css/filament/admin/theme.css');
 const FILAMENT_BRAND_VIEW = path.join(PROJECT_ROOT, 'resources/views/filament/theme/brand.blade.php');
 const FILAMENT_PROVIDER = path.join(PROJECT_ROOT, 'app/Providers/Filament/AdminPanelProvider.php');
+const SIDEBAR_COMPONENT = path.join(PROJECT_ROOT, 'web/src/components/Sidebar.vue');
 const FRONTEND_INDEX = path.join(PROJECT_ROOT, 'web/index.html');
 const GENERATED_INDEX = path.join(PROJECT_ROOT, 'resources/views/themes/default/index.blade.php');
 const BRANDING_DIR = path.join(PROJECT_ROOT, 'public/branding');
@@ -347,6 +348,7 @@ test('runtime UI keeps custom backgrounds authoritative and centralizes theme pl
   const notFound = fs.readFileSync(path.join(PROJECT_ROOT, 'web/src/views/NotFoundView.vue'), 'utf8');
   const avatarUtil = fs.readFileSync(path.join(PROJECT_ROOT, 'web/src/utils/app.ts'), 'utf8');
   const exploreAlbum = fs.readFileSync(path.join(PROJECT_ROOT, 'web/src/components/Explore/ExploreAlbum.vue'), 'utf8');
+  const sidebar = fs.readFileSync(SIDEBAR_COMPONENT, 'utf8');
 
   assert.ok(home.indexOf('homepage_background_image_url') < home.indexOf('homepage_background_images'));
   assert.ok(home.indexOf('homepage_background_images') < home.indexOf('siteThemeAssets.hero'));
@@ -361,6 +363,7 @@ test('runtime UI keeps custom backgrounds authoritative and centralizes theme pl
   assert.match(avatarUtil, /return avatar \|\| siteThemeAssets\.avatar/);
   assert.doesNotMatch(avatarUtil, /assets\/avatar\.png/);
   assert.match(exploreAlbum, /getSiteThemeAssets\(readServerSiteTheme\(\)\)\.empty/);
+  assert.match(sidebar, /var\(--theme-primary, #0094c5\)/);
 });
 
 test('theme CSS contains no unavailable generated image URLs', () => {
@@ -452,9 +455,13 @@ test('branding routes precede image and SPA dispatch with MIME-safe fallbacks', 
 test('Nginx sends only missing branding files to Laravel fallback', () => {
   const publicConfig = fs.readFileSync(PUBLIC_NGINX, 'utf8');
   const dockerConfig = fs.readFileSync(DOCKER_NGINX, 'utf8');
+  const brandingController = fs.readFileSync(BRANDING_CONTROLLER, 'utf8');
 
   assert.match(publicConfig, /location \^~ \/branding\/\s*\{/);
   assert.match(publicConfig, /try_files \$uri \/index\.php\?\$query_string;/);
+  assert.match(publicConfig, /max-age=3600, must-revalidate/);
+  assert.doesNotMatch(publicConfig, /immutable/);
+  assert.doesNotMatch(brandingController, /31536000/);
   assert.match(dockerConfig, /\(\?!branding\/\)/);
   assert.match(dockerConfig, /webp/);
 });

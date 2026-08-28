@@ -48,7 +48,7 @@ HTML;
             ]);
         }
 
-        return view($resolution['view'], [
+        return view()->file($resolution['viewPath'], [
             // The directory ID is retained for third-party Blade themes, while
             // the runtime ID is intentionally limited to the built-in catalog.
             'siteThemeId' => $resolution['id'],

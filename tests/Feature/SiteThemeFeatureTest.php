@@ -84,6 +84,18 @@ class SiteThemeFeatureTest extends TestCase
             ->assertSee('data-theme-id="third-party"', false);
     }
 
+    public function test_dot_containing_third_party_theme_renders_its_verified_entry_path(): void
+    {
+        $this->createTheme('default');
+        $this->createTheme('third.party', ['name' => 'Dotted Third Party']);
+        $this->siteSettings->theme = 'third.party';
+
+        $this->get('/dotted-third-party-feature')
+            ->assertOk()
+            ->assertSee('data-site-theme="default"', false)
+            ->assertSee('data-theme-id="third.party"', false);
+    }
+
     public function test_illegal_ids_and_invalid_manifests_fall_back_to_default(): void
     {
         $this->createTheme('default');

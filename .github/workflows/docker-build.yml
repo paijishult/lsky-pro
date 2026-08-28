@@ -6,11 +6,96 @@ on:
     tags: ['v*']
   workflow_dispatch:
 
+# Avoid burning an hour of emulated multi-architecture work for a commit that
+# is immediately superseded by a newer push to the same ref.
+concurrency:
+  group: lsky-image-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
-  IMAGE_NAME: ghcr.io/${{ github.repository }}
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  BUILD_CACHE_SCOPE: lsky-pro-multiarch
 
 jobs:
+  test:
+    name: PHP theme tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: bcmath, curl, fileinfo, ftp, gd, imagick, intl, mbstring, pdo_sqlite, pcntl, xsl, zip
+          coverage: none
+
+      - name: Prepare application
+        run: |
+          cp .env.example .env
+          mkdir -p database
+          touch database/database.sqlite
+
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Generate test application key
+        run: php artisan key:generate --force
+
+      - name: Run site theme tests
+        run: >-
+          php artisan test
+          tests/Unit/SiteThemeTest.php
+          tests/Unit/AppServiceThemesTest.php
+          tests/Feature/SiteThemeFeatureTest.php
+
+  registry-access:
+    name: Verify GHCR write access
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Verify a registry upload can be started
+        env:
+          GHCR_USERNAME: ${{ secrets.GHCR_USERNAME || github.actor }}
+          GHCR_PASSWORD: ${{ secrets.GHCR_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          token="$({
+            curl --fail --silent --show-error \
+              --user "${GHCR_USERNAME}:${GHCR_PASSWORD}" \
+              "https://${REGISTRY}/token?service=${REGISTRY}&scope=repository:${IMAGE_NAME}:pull,push"
+          } | jq -er '.token')"
+
+          headers="$(mktemp)"
+          status="$(curl --silent --show-error --output /dev/null --dump-header "${headers}" \
+            --write-out '%{http_code}' --request POST \
+            --header "Authorization: Bearer ${token}" \
+            "https://${REGISTRY}/v2/${IMAGE_NAME}/blobs/uploads/")"
+
+          if [ "${status}" != "202" ]; then
+            echo "::error::GHCR denied package write access before the expensive multi-architecture build. Link the ${IMAGE_NAME} package to this repository or configure GHCR_TOKEN with write:packages."
+            exit 1
+          fi
+
+          upload_url="$(awk 'tolower($1) == "location:" { print $2 }' "${headers}" | tr -d '\r' | tail -n 1)"
+          if [ -n "${upload_url}" ]; then
+            curl --silent --show-error --output /dev/null --request DELETE \
+              --header "Authorization: Bearer ${token}" "${upload_url}" || true
+          fi
+
   build:
+    name: Build and push multi-architecture image
+    needs: [test, registry-access]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -19,6 +104,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Derive image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=2.3,enable={{is_default_branch}}
+            type=ref,event=tag
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -29,9 +127,11 @@ jobs:
       - name: Login to GHCR
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.GHCR_USERNAME || github.actor }}
+          # GHCR_TOKEN is optional. It allows an existing, unlinked package to
+          # be repaired with a classic PAT while normal runs use GITHUB_TOKEN.
+          password: ${{ secrets.GHCR_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Build & Push (multi-arch)
         uses: docker/build-push-action@v6
@@ -40,9 +140,9 @@ jobs:
           file: Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: |
-            ${{ env.IMAGE_NAME }}:latest
-            ${{ env.IMAGE_NAME }}:2.3
-            ${{ env.IMAGE_NAME }}:${{ github.ref_name == 'main' && '2.3' || github.ref_name }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          # Successful runs export all layers, including the expensive arm64
+          # extension build, for reuse by subsequent content-only pushes.
+          cache-from: type=gha,scope=${{ env.BUILD_CACHE_SCOPE }}
+          cache-to: type=gha,mode=max,scope=${{ env.BUILD_CACHE_SCOPE }}

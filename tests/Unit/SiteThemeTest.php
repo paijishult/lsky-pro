@@ -112,13 +112,15 @@ class SiteThemeTest extends TestCase
         self::assertSame('default', $resolver->resolveRuntimeTheme('third-party'));
         self::assertSame('default', $resolver->resolveDirectoryTheme('technology'));
 
+        $resolution = $resolver->resolve('third-party');
+
+        self::assertNotNull($resolution);
+        self::assertSame('third-party', $resolution['id']);
+        self::assertSame('default', $resolution['runtimeId']);
+        self::assertSame('themes/third-party/index', $resolution['view']);
         self::assertSame(
-            [
-                'id' => 'third-party',
-                'runtimeId' => 'default',
-                'view' => 'themes/third-party/index',
-            ],
-            $resolver->resolve('third-party'),
+            $this->themeRoot . DIRECTORY_SEPARATOR . 'third-party' . DIRECTORY_SEPARATOR . 'index.blade.php',
+            $resolution['viewPath'],
         );
     }
 
