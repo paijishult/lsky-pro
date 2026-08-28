@@ -11,7 +11,8 @@
     "type-check": "vue-tsc --build --force",
     "pre-build": "shx rm -rf ../public/themes/default",
     "post-build": "shx mv dist/index.html ../resources/views/themes/default/index.blade.php && shx mv dist/config.json ../resources/views/themes/default/config.json && shx cp -r dist/* ../public/ && shx rm -rf dist",
-    "openapi-ts": "openapi-ts"
+    "openapi-ts": "openapi-ts",
+    "test:themes": "node --experimental-strip-types --test tests/themes/resolver.test.ts tests/themes/theme-ui.test.ts"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.6.0",

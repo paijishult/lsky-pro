@@ -1,11 +1,11 @@
-<div class="fixed inset-0 w-full h-full overflow-hidden py-4 px-4 md:py-20 md:px-0">
-    <div class="flex flex-col container max-w-screen-md mx-auto h-full p-6 rounded-lg shadow-md overflow-x-hidden overflow-y-auto bg-white dark:bg-[rgba(var(--gray-800),var(--tw-bg-opacity))]">
-        <h1 class="mt-6 mb-2 text-2xl">软件许可和使用协议</h1>
-        <p class="text-sm text-gray-400 mb-8">请仔细阅读协议后，点击协议结尾的「同意此协议」按钮继续使用本软件。</p>
-        <div class="markdown-body dark:bg-[rgba(var(--gray-800),var(--tw-bg-opacity))]">
+<div class="fixed inset-0 w-full h-full overflow-hidden py-4 px-4 md:py-20 md:px-0 filament-license-wrapper">
+    <div class="flex flex-col container max-w-screen-md mx-auto h-full p-6 rounded-lg shadow-md overflow-x-hidden overflow-y-auto bg-white dark:bg-[rgba(var(--gray-800),var(--tw-bg-opacity))] filament-license-card">
+        <h1 class="mt-6 mb-2 text-2xl font-bold filament-license-title">软件许可和使用协议</h1>
+        <p class="text-sm text-gray-400 mb-8 filament-license-subtitle">请仔细阅读协议后，点击协议结尾的「同意此协议」按钮继续使用本软件。</p>
+        <div class="markdown-body dark:bg-[rgba(var(--gray-800),var(--tw-bg-opacity))] filament-license-content">
             {!! $content !!}
         </div>
-        <div class="mt-8 flex justify-end">
+        <div class="mt-8 flex justify-end filament-license-action">
             <x-filament::button wire:click="agree()">同意此协议</x-filament::button>
         </div>
     </div>

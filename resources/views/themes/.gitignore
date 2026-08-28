@@ -2,3 +2,9 @@
 !.gitignore
 !default/
 !default/**
+!anime/
+!anime/**
+!technology/
+!technology/**
+!elegant/
+!elegant/**

@@ -80,10 +80,10 @@ provide('scrollContainerRef', scrollContainerRef);
 </script>
 
 <template>
-  <NLayout :key="layoutStore.key" :class="{dark: themeStore.isDark}" class="h-full min-h-screen" has-sider>
-    <NLayout class="inset-0 h-full" has-sider position="absolute">
+  <NLayout :key="layoutStore.key" :class="{dark: themeStore.isDark}" class="h-full min-h-screen app-layout" has-sider>
+    <NLayout class="inset-0 h-full app-layout-inner" has-sider position="absolute">
       <Sidebar v-if="userStore.isLoggedIn" />
-      <NLayout>
+      <NLayout class="app-layout-main">
         <Header
           :class="headerClass"
           v-if="props.showHeader"
@@ -97,7 +97,7 @@ provide('scrollContainerRef', scrollContainerRef);
         <NLayoutContent
           ref="scrollContainerRef"
           :native-scrollbar="true"
-          class="w-full h-full"
+          class="w-full h-full app-layout-content"
           position="absolute"
           :on-scroll="handleScroll"
           :class="{'pt-16': props.showHeader && ! props.toggleHeader}"

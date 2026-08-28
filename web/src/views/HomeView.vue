@@ -13,9 +13,9 @@ import number from "../utils/number";
 import {useLayoutStore} from "@/stores/layout";
 import {useRouter} from "vue-router";
 import arr from "@/utils/arr";
-import bgImg from '@/assets/bg.jpg'
 import { useI18n } from 'vue-i18n'
 import eventBus, { EVENTS } from '@/utils/eventBus'
+import {getSiteThemeAssets, readServerSiteTheme} from '@/themes'
 
 const router = useRouter()
 const layoutStore = useLayoutStore()
@@ -23,6 +23,7 @@ const configStore = useConfigStore()
 const userStore = useUserStore()
 const message = useMessage()
 const i18n = useI18n()
+const siteThemeAssets = getSiteThemeAssets(readServerSiteTheme())
 
 const numberAnimationInstRef = ref<NumberAnimationInst | null>(null)
 const bgStyle = ref<CSSProperties>()
@@ -38,7 +39,7 @@ onMounted(() => {
     const imageUrl = arr.randomItem(configStore.configs?.site.homepage_background_images)
     bgStyle.value = {backgroundImage: `url("${imageUrl}")`}
   } else {
-    bgStyle.value = {backgroundImage: `url("${bgImg}")`}
+    bgStyle.value = {backgroundImage: `url("${siteThemeAssets.hero}")`}
   }
 })
 
@@ -48,7 +49,7 @@ function handleUploadClick() {
     message.error(i18n.t('Please login before uploading images'))
     return
   }
-  
+
   // 触发全局事件，让UploadButton组件响应
   eventBus.emit(EVENTS.TRIGGER_UPLOAD_BUTTON)
 }
@@ -60,14 +61,14 @@ function handleUploadClick() {
     :show-footer="true"
     :header-title="configStore.configs?.app.name || ''"
   >
-    <div class="relative z-[1] h-screen w-full overflow-hidden">
-      <div class="h-full w-full bg-gradient-to-b from-indigo-500 bg-fixed bg-center bg-cover animate-slide rightness-50" :style="bgStyle"></div>
+    <div class="relative z-[1] h-screen w-full overflow-hidden home-hero-container">
+      <div class="h-full w-full bg-gradient-to-b from-indigo-500 bg-fixed bg-center bg-cover animate-slide rightness-50 home-hero-bg" :style="bgStyle"></div>
 
-      <div class="absolute inset-0 z-[2] w-full h-full flex items-center bg-black/40">
-        <div class="container mx-auto max-w-screen-lg px-6 space-y-6 break-all text-center">
-          <h1 class="text-white text-6xl md:text-7xl font-bold">{{ configStore.configs?.site.homepage_title }}</h1>
-          <h2 class="text-white text-2xl md:text-3xl font-medium">{{ configStore.configs?.site.homepage_description }}</h2>
-          <h3 class="inline-flex bg-black/30 rounded text-md p-2 text-gray-100">
+      <div class="absolute inset-0 z-[2] w-full h-full flex items-center bg-black/40 home-hero-overlay">
+        <div class="container mx-auto max-w-screen-lg px-6 space-y-6 break-all text-center home-hero-content">
+          <h1 class="text-white text-6xl md:text-7xl font-bold home-hero-title">{{ configStore.configs?.site.homepage_title }}</h1>
+          <h2 class="text-white text-2xl md:text-3xl font-medium home-hero-desc">{{ configStore.configs?.site.homepage_description }}</h2>
+          <h3 class="inline-flex bg-black/30 rounded text-md p-2 text-gray-100 home-hero-stats">
             <i18n-t keypath="The site has hosted {count} images, occupying {size} of storage." scope="global">
               <template #count>
                 <NNumberAnimation
@@ -82,10 +83,10 @@ function handleUploadClick() {
               </template>
             </i18n-t>
           </h3>
-          <div class="flex flex-col sm:flex-row justify-center gap-6">
+          <div class="flex flex-col sm:flex-row justify-center gap-6 home-hero-buttons">
 
             <NButton
-              class="p-6"
+              class="p-6 home-hero-btn"
               strong
               round
               type="info"
@@ -100,7 +101,7 @@ function handleUploadClick() {
             </NButton>
 
             <NButton
-              class="p-6"
+              class="p-6 home-hero-btn"
               strong
               round
               type="error"
@@ -114,7 +115,7 @@ function handleUploadClick() {
               {{ $t('Upload Now') }}
             </NButton>
 
-            <NButton class="p-6" strong round type="success" size="large" @click="router.push('/user/dashboard')">
+            <NButton class="p-6 home-hero-btn" strong round type="success" size="large" @click="router.push('/user/dashboard')">
               <template #icon>
                 <NIcon :component="HomeOutlineIcon" />
               </template>

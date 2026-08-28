@@ -15,6 +15,7 @@ use App\Settings\AppSettings;
 use App\SmsProvider;
 use App\SocialiteProvider;
 use App\StorageProvider;
+use App\Support\SiteTheme;
 use DateTimeZone;
 use Filament\Support\Colors\Color;
 use Illuminate\Http\Request;
@@ -33,6 +34,13 @@ use Throwable;
 
 class AppService
 {
+    private SiteTheme $siteTheme;
+
+    public function __construct(?SiteTheme $siteTheme = null)
+    {
+        $this->siteTheme = $siteTheme ?? new SiteTheme();
+    }
+
     /**
      * 系统是否安装了
      *
@@ -100,18 +108,7 @@ class AppService
      */
     public function getThemes(): array
     {
-        $directories = File::directories(resource_path('views/themes'));
-
-        $themes = [];
-
-        foreach ($directories as $directory) {
-            $config = json_decode(@file_get_contents("{$directory}/config.json") ?: '', true);
-            $themes[] = array_merge([
-                'id' => basename($directory),
-            ], $config);
-        }
-
-        return $themes;
+        return $this->siteTheme->themes();
     }
 
     /**

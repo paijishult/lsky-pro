@@ -15,3 +15,289 @@
 .fi-fo-builder>ul h4 {
     @apply max-w-24 sm:max-w-80 md:max-w-full;
 }
+
+/* ==========================================================================
+   Filament Theme Scopes (Anime, Technology, Elegant)
+   Default panel remains completely untouched.
+   ========================================================================== */
+
+/* ==========================================================================
+   1. ANIME ADMIN THEME
+   ========================================================================== */
+
+html[data-site-theme="anime"] {
+    --site-admin-accent: #b42362;
+    --site-admin-accent-rgb: 180, 35, 98;
+}
+
+/* Anime Admin Base Layout */
+html[data-site-theme="anime"] body {
+    background-color: #fff5f8;
+}
+
+html[data-site-theme="anime"].dark body {
+    background-color: #150f1d;
+}
+
+/* Anime Admin Sidebar */
+html[data-site-theme="anime"] .fi-sidebar {
+    border-right: 1.5px solid rgba(var(--site-admin-accent-rgb), 0.2);
+}
+
+html[data-site-theme="anime"] .fi-sidebar-item-active .fi-sidebar-item-button {
+    background-color: rgba(var(--site-admin-accent-rgb), 0.15) !important;
+    border-radius: 9999px;
+    font-weight: 600;
+}
+
+html[data-site-theme="anime"] .fi-sidebar-item-button:hover {
+    border-radius: 9999px;
+}
+
+/* Anime Admin Sections & Cards */
+html[data-site-theme="anime"] .fi-section,
+html[data-site-theme="anime"] .fi-wi,
+html[data-site-theme="anime"] .fi-simple-card,
+html[data-site-theme="anime"] .fi-modal-window {
+    border-radius: 18px !important;
+    border: 1.5px solid rgba(var(--site-admin-accent-rgb), 0.22) !important;
+    box-shadow: 0 8px 24px -4px rgba(var(--site-admin-accent-rgb), 0.12) !important;
+}
+
+/* Anime Admin Buttons */
+html[data-site-theme="anime"] .fi-btn {
+    border-radius: 9999px !important;
+    font-weight: 500;
+    transition: box-shadow 0.2s ease;
+}
+
+
+/* Anime Admin Tables */
+html[data-site-theme="anime"] .fi-ta-content {
+    border-radius: 18px !important;
+    border: 1.5px solid rgba(var(--site-admin-accent-rgb), 0.2) !important;
+
+}
+
+html[data-site-theme="anime"] .fi-ta-header-cell {
+    background-color: rgba(253, 242, 248, 0.7);
+}
+
+html[data-site-theme="anime"].dark .fi-ta-header-cell {
+    background-color: rgba(34, 23, 47, 0.7);
+}
+
+/* Anime Admin Badges & Tabs */
+html[data-site-theme="anime"] .fi-badge {
+    border-radius: 9999px !important;
+}
+
+html[data-site-theme="anime"] .fi-tabs-item-active {
+    border-bottom: 3px solid currentColor !important;
+    font-weight: 600;
+}
+
+/* Anime Admin Inputs */
+html[data-site-theme="anime"] .fi-input-wrp {
+    border-radius: 12px !important;
+    border-color: rgba(var(--site-admin-accent-rgb), 0.25) !important;
+}
+
+html[data-site-theme="anime"] .fi-input-wrp:focus-within {
+    border-color: rgb(var(--primary-600)) !important;
+    box-shadow: 0 0 0 2px rgba(var(--primary-500), 0.25) !important;
+}
+
+/* Anime Admin License Page */
+html[data-site-theme="anime"] .filament-license-card {
+    border-radius: 24px;
+    border: 1.5px solid rgba(var(--site-admin-accent-rgb), 0.3);
+    box-shadow: 0 12px 36px rgba(var(--site-admin-accent-rgb), 0.2);
+}
+
+/* ==========================================================================
+   2. TECHNOLOGY ADMIN THEME
+   ========================================================================== */
+
+html[data-site-theme="technology"] {
+    --site-admin-accent: #1d4ed8;
+    --site-admin-accent-rgb: 29, 78, 216;
+}
+
+/* Technology Admin Base Layout */
+html[data-site-theme="technology"] body {
+    background-color: #f0f5fc;
+    background-image:
+        linear-gradient(to right, rgba(var(--site-admin-accent-rgb), 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(var(--site-admin-accent-rgb), 0.04) 1px, transparent 1px);
+    background-size: 36px 36px;
+}
+
+html[data-site-theme="technology"].dark body {
+    background-color: #070c18;
+    background-image:
+        linear-gradient(to right, rgba(56, 189, 248, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(56, 189, 248, 0.06) 1px, transparent 1px);
+    background-size: 36px 36px;
+}
+
+/* Technology Admin Sidebar */
+html[data-site-theme="technology"] .fi-sidebar {
+    border-right: 1px solid rgba(var(--site-admin-accent-rgb), 0.22);
+}
+
+html[data-site-theme="technology"] .fi-sidebar-item-active .fi-sidebar-item-button {
+    background-color: rgba(var(--site-admin-accent-rgb), 0.15) !important;
+    border-left: 3px solid var(--site-admin-accent);
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+/* Technology Admin Sections & Cards */
+html[data-site-theme="technology"] .fi-section,
+html[data-site-theme="technology"] .fi-wi,
+html[data-site-theme="technology"] .fi-simple-card,
+html[data-site-theme="technology"] .fi-modal-window {
+    border-radius: 8px !important;
+    border: 1px solid rgba(var(--site-admin-accent-rgb), 0.22) !important;
+    box-shadow: 0 4px 20px -2px rgba(var(--site-admin-accent-rgb), 0.1) !important;
+    backdrop-filter: blur(10px);
+}
+
+/* Technology Admin Buttons */
+html[data-site-theme="technology"] .fi-btn {
+    border-radius: 6px !important;
+    letter-spacing: 0.02em;
+    transition: all 0.2s ease;
+}
+
+html[data-site-theme="technology"] .fi-btn-color-primary:hover {
+    box-shadow: 0 0 14px rgba(var(--primary-500), 0.45);
+}
+
+/* Technology Admin Tables */
+html[data-site-theme="technology"] .fi-ta-content {
+    border-radius: 8px !important;
+    border: 1px solid rgba(var(--site-admin-accent-rgb), 0.22) !important;
+}
+
+html[data-site-theme="technology"] .fi-ta-header-cell {
+    background-color: rgba(235, 243, 252, 0.8);
+    font-weight: 600;
+}
+
+html[data-site-theme="technology"].dark .fi-ta-header-cell {
+    background-color: rgba(19, 34, 66, 0.8);
+}
+
+/* Technology Admin Inputs */
+html[data-site-theme="technology"] .fi-input-wrp {
+    border-radius: 6px !important;
+    border-color: rgba(var(--site-admin-accent-rgb), 0.25) !important;
+}
+
+html[data-site-theme="technology"] .fi-input-wrp:focus-within {
+    border-color: rgb(var(--primary-600)) !important;
+    box-shadow: 0 0 10px rgba(var(--primary-500), 0.35) !important;
+}
+
+/* Technology Admin License Page */
+html[data-site-theme="technology"] .filament-license-card {
+    border-radius: 8px;
+    border: 1px solid rgba(var(--site-admin-accent-rgb), 0.35);
+    box-shadow: 0 0 25px rgba(var(--site-admin-accent-rgb), 0.25);
+    backdrop-filter: blur(12px);
+}
+
+/* ==========================================================================
+   3. ELEGANT ADMIN THEME
+   ========================================================================== */
+
+html[data-site-theme="elegant"] {
+    --site-admin-accent: #795548;
+    --site-admin-accent-rgb: 121, 85, 72;
+}
+
+/* Elegant Admin Base Layout */
+html[data-site-theme="elegant"] body {
+    background-color: #faf7f2;
+}
+
+html[data-site-theme="elegant"].dark body {
+    background-color: #141210;
+}
+
+/* Elegant Admin Sidebar */
+html[data-site-theme="elegant"] .fi-sidebar {
+    border-right: 1px solid rgba(var(--site-admin-accent-rgb), 0.2);
+}
+
+html[data-site-theme="elegant"] .fi-sidebar-item-active .fi-sidebar-item-button {
+    background-color: rgba(var(--site-admin-accent-rgb), 0.12) !important;
+    border-left: 2px solid var(--site-admin-accent);
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+/* Elegant Admin Sections & Cards */
+html[data-site-theme="elegant"] .fi-section,
+html[data-site-theme="elegant"] .fi-wi,
+html[data-site-theme="elegant"] .fi-simple-card,
+html[data-site-theme="elegant"] .fi-modal-window {
+    border-radius: 6px !important;
+    border: 1px solid rgba(var(--site-admin-accent-rgb), 0.22) !important;
+    box-shadow: 0 4px 16px -2px rgba(var(--site-admin-accent-rgb), 0.08) !important;
+}
+
+/* Elegant Admin Buttons */
+html[data-site-theme="elegant"] .fi-btn {
+    border-radius: 4px !important;
+    letter-spacing: 0.03em;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Elegant Admin Tables */
+html[data-site-theme="elegant"] .fi-ta-content {
+    border-radius: 6px !important;
+    border: 1px solid rgba(var(--site-admin-accent-rgb), 0.2) !important;
+}
+
+html[data-site-theme="elegant"] .fi-ta-header-cell {
+    background-color: rgba(245, 239, 228, 0.8);
+    font-weight: 600;
+}
+
+html[data-site-theme="elegant"].dark .fi-ta-header-cell {
+    background-color: rgba(42, 37, 32, 0.8);
+}
+
+/* Elegant Admin Inputs */
+html[data-site-theme="elegant"] .fi-input-wrp {
+    border-radius: 4px !important;
+    border-color: rgba(var(--site-admin-accent-rgb), 0.25) !important;
+}
+
+html[data-site-theme="elegant"] .fi-input-wrp:focus-within {
+    border-color: rgb(var(--primary-600)) !important;
+    box-shadow: 0 0 0 2px rgba(var(--primary-500), 0.25) !important;
+}
+
+/* Elegant Admin License Page */
+html[data-site-theme="elegant"] .filament-license-card {
+    border-radius: 6px;
+    border: 1px solid rgba(var(--site-admin-accent-rgb), 0.3);
+    box-shadow: 0 8px 30px rgba(var(--site-admin-accent-rgb), 0.15);
+}
+
+/* ==========================================================================
+   4. Universal Accessibility for Filament Themes
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .fi-btn,
+    html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .fi-sidebar-item-button,
+    html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .fi-modal-window {
+        transition: none !important;
+        animation: none !important;
+    }
+}

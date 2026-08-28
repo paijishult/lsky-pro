@@ -8,6 +8,7 @@ import i18n from "@/i18n";
 import 'vfonts/FiraCode.css'
 import './assets/main.css'
 import './index.css'
+import './themes/site-theme.css'
 
 // 导入字体图标
 import { library } from '@fortawesome/fontawesome-svg-core'

@@ -1,0 +1,161 @@
+/**
+ * Elegant Theme (象牙白 / 暖灰 / 炭黑 / 香槟金 / 编辑排版感 / 细边框 / 大留白)
+ *
+ * Scoped strictly to html[data-site-theme="elegant"]
+ */
+
+/* ==========================================================================
+   Light Mode Tokens
+   ========================================================================== */
+html[data-site-theme="elegant"] {
+  --site-theme-accent: #a67c52;
+  --site-theme-surface: #fbf8f3;
+
+  --theme-primary: #a67c52;
+  --theme-primary-hover: #b88f6b;
+  --theme-primary-pressed: #8f693f;
+  --theme-primary-light: rgba(166, 124, 82, 0.1);
+  --theme-primary-focus: rgba(166, 124, 82, 0.35);
+
+  --theme-secondary: #786049;
+  --theme-secondary-hover: #8f745a;
+  --theme-secondary-light: rgba(120, 96, 73, 0.1);
+
+  --theme-tertiary: #c5a059;
+  --theme-tertiary-hover: #d4b26f;
+
+  --theme-bg: #faf7f2;
+  --theme-bg-gradient: linear-gradient(180deg, #faf7f2 0%, #f4eee3 100%);
+  --theme-surface: #ffffff;
+  --theme-surface-glass: rgba(255, 255, 255, 0.92);
+  --theme-surface-subtle: #f5efe4;
+  --theme-surface-hover: #ede4d5;
+
+  --theme-border: rgba(166, 124, 82, 0.22);
+  --theme-border-hover: rgba(166, 124, 82, 0.55);
+  --theme-border-subtle: rgba(166, 124, 82, 0.12);
+
+  --theme-text-main: #2b2623;
+  --theme-text-muted: #78716c;
+  --theme-text-heading: #1c1917;
+  --theme-text-on-primary: #ffffff;
+
+  --theme-shadow-sm: 0 2px 6px rgba(166, 124, 82, 0.06);
+  --theme-shadow-md: 0 6px 20px -2px rgba(166, 124, 82, 0.09), 0 2px 6px rgba(43, 38, 35, 0.04);
+  --theme-shadow-lg: 0 14px 32px -4px rgba(166, 124, 82, 0.16), 0 4px 10px rgba(43, 38, 35, 0.06);
+  --theme-shadow-glow: 0 0 16px rgba(166, 124, 82, 0.25);
+
+  --theme-radius-sm: 4px;
+  --theme-radius-md: 6px;
+  --theme-radius-lg: 10px;
+  --theme-radius-pill: 6px;
+
+  --theme-font-serif: 'Playfair Display', 'Didot', 'Bodoni MT', 'Georgia', 'Songti SC', serif;
+
+  --theme-hero-overlay: linear-gradient(180deg, rgba(35, 30, 26, 0.72) 0%, rgba(20, 18, 16, 0.85) 100%);
+  --theme-hero-bg-fallback: var(--theme-bg-gradient);
+  --theme-auth-bg-fallback: linear-gradient(180deg, #faf7f2 0%, #f4eee3 100%);
+  --theme-empty-image: none;
+}
+
+/* ==========================================================================
+   Dark Mode Tokens
+   ========================================================================== */
+html[data-site-theme="elegant"].dark,
+html[data-site-theme="elegant"] .dark,
+html.dark[data-site-theme="elegant"] {
+  --site-theme-accent: #d4af37;
+  --site-theme-surface: #1e1b17;
+
+  --theme-primary: #d4af37;
+  --theme-primary-hover: #e5c158;
+  --theme-primary-pressed: #b39226;
+  --theme-primary-light: rgba(212, 175, 55, 0.15);
+  --theme-primary-focus: rgba(212, 175, 55, 0.45);
+
+  --theme-secondary: #a89278;
+  --theme-secondary-hover: #baa48b;
+  --theme-secondary-light: rgba(168, 146, 120, 0.15);
+
+  --theme-tertiary: #e8d8b0;
+  --theme-tertiary-hover: #f3e8cb;
+
+  --theme-bg: #141210;
+  --theme-bg-gradient: linear-gradient(180deg, #13110f 0%, #191714 50%, #171512 100%);
+  --theme-surface: #201d19;
+  --theme-surface-glass: rgba(32, 29, 25, 0.88);
+  --theme-surface-subtle: #2a2520;
+  --theme-surface-hover: #36302a;
+
+  --theme-border: rgba(212, 175, 55, 0.22);
+  --theme-border-hover: rgba(212, 175, 55, 0.55);
+  --theme-border-subtle: rgba(212, 175, 55, 0.12);
+
+  --theme-text-main: #f7f4ed;
+  --theme-text-muted: #a8a29e;
+  --theme-text-heading: #ffffff;
+  --theme-text-on-primary: #1c1810;
+
+  --theme-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --theme-shadow-md: 0 6px 20px rgba(0, 0, 0, 0.65), 0 0 12px rgba(212, 175, 55, 0.12);
+  --theme-shadow-lg: 0 14px 36px rgba(0, 0, 0, 0.8), 0 0 20px rgba(212, 175, 55, 0.2);
+  --theme-shadow-glow: 0 0 20px rgba(212, 175, 55, 0.35);
+
+  --theme-hero-overlay: linear-gradient(180deg, rgba(12, 10, 9, 0.88) 0%, rgba(18, 16, 14, 0.92) 100%);
+}
+
+/* ==========================================================================
+   Elegant Theme Specific Decorative Details
+   ========================================================================== */
+
+/* Editorial Headings & Typography */
+html[data-site-theme="elegant"] h1,
+html[data-site-theme="elegant"] h2,
+html[data-site-theme="elegant"] .home-hero-content h1,
+html[data-site-theme="elegant"] .auth-card .n-card-header__main {
+  font-family: var(--theme-font-serif, inherit);
+  letter-spacing: 0.03em;
+}
+
+/* Refined Minimalist Cards with Thin Golden Hairline Borders */
+html[data-site-theme="elegant"] .n-card,
+html[data-site-theme="elegant"] .plan-card,
+html[data-site-theme="elegant"] .auth-card {
+  border-radius: var(--theme-radius-md);
+  border: 1px solid var(--theme-border);
+  box-shadow: var(--theme-shadow-md);
+  transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html[data-site-theme="elegant"] .plan-card:hover,
+html[data-site-theme="elegant"] .recommended-plan:hover {
+  border-color: var(--theme-border-hover);
+  box-shadow: var(--theme-shadow-lg);
+}
+
+/* Restrained, Sophisticated Buttons */
+html[data-site-theme="elegant"] .n-button:not(.n-button--circle):not(.n-button--round) {
+  border-radius: var(--theme-radius-sm);
+  letter-spacing: 0.04em;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Hero Stats Pill: Refined Warm Frosted Frame */
+html[data-site-theme="elegant"] .home-hero-stats {
+  border-radius: var(--theme-radius-sm);
+  background: rgba(28, 25, 22, 0.75);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  letter-spacing: 0.03em;
+}
+
+/* Elegant scrollbar */
+html[data-site-theme="elegant"] ::-webkit-scrollbar-thumb {
+  background: rgba(166, 124, 82, 0.35);
+  border-radius: 4px;
+}
+
+html[data-site-theme="elegant"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(166, 124, 82, 0.65);
+}

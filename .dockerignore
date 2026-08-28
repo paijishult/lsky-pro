@@ -1,5 +1,6 @@
 # Docker 构建上下文排除（镜像瘦身）
 # 注意：hashes.json 保留（升级比对用）；public/、vendor/、storage 骨架保留
+# public/branding/（含 themes）必须进入镜像，不能在此排除
 # 注意：storage/app 骨架必须保留（entrypoint chmod/数据卷映射依赖）
 .git
 .gitignore

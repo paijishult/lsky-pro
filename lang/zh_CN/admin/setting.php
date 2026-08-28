@@ -115,7 +115,9 @@ return [
         'fields' => [
             'theme' => [
                 'label' => '网站主题',
-                'placeholder' => '请选择网站主题'
+                'placeholder' => '请选择网站主题',
+                'helper_text' => '主题按资源目录加载；内建主题支持 Anime、Technology、Elegant。目录不存在或配置非法时将安全回退到默认主题。',
+                'invalid' => '请选择一个存在且合法的主题目录。'
             ],
             'title' => [
                 'label' => '网站标题',

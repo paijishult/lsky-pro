@@ -1,0 +1,11 @@
+/**
+ * Site Theme System Entry
+ *
+ * Implements anime, technology, and elegant themes while strictly preserving
+ * legacy default visual styles without unscoped CSS pollution.
+ */
+@import './tokens.css';
+@import './anime.css';
+@import './technology.css';
+@import './elegant.css';
+@import './components.css';

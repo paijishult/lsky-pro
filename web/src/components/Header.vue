@@ -9,6 +9,8 @@ import LoginButton from "@/components/NavBarMenus/LoginButton.vue";
 import {useUserStore} from "@/stores/user";
 import ExploreButton from "@/components/NavBarMenus/ExploreButton.vue";
 import {useConfigStore} from "@/stores/config";
+import {RouterLink} from "vue-router";
+import {getSiteThemeAssets, readServerSiteTheme} from "@/themes";
 
 const props = defineProps({
   title: {
@@ -35,16 +37,32 @@ const props = defineProps({
 
 const userStore = useUserStore()
 const configStore = useConfigStore()
+const siteThemeAssets = getSiteThemeAssets(readServerSiteTheme())
 </script>
 
 <template>
   <NLayoutHeader
     :bordered="props.bordered"
-    class="flex text-md p-4 items-center justify-between transition-all duration-400 border-b dark:border-b-gray-600 w-full h-16 z-[2]"
+    class="flex text-md p-4 items-center justify-between transition-all duration-400 border-b dark:border-b-gray-600 w-full h-16 z-[2] app-header"
     position="absolute"
   >
     <div class="flex items-center w-1/2 md:w-[70%]">
       <SidebarButton class="mr-4" v-if="props.showSidebarButton"/>
+
+      <RouterLink
+        to="/"
+        class="mr-2 inline-flex h-9 w-9 shrink-0 items-center justify-center app-brand-link"
+        :aria-label="configStore.configs?.app.name || props.title || 'Home'"
+      >
+        <img
+          :src="siteThemeAssets.brand"
+          alt=""
+          aria-hidden="true"
+          class="h-9 w-9 object-contain app-brand-mark"
+          decoding="async"
+          draggable="false"
+        />
+      </RouterLink>
 
       <HeaderTitle v-if="props.title" :title="props.title"/>
     </div>

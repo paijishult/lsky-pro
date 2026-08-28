@@ -7,7 +7,8 @@ import viteImagemin from 'vite-plugin-imagemin';
 
 // https://vitejs.dev/config/
 export default ({ mode }: ConfigEnv) => {
-  const env = loadEnv(mode, process.cwd())
+  const env = loadEnv(mode, process.cwd(), '')
+  const analyze = env.ANALYZE?.toLowerCase() === 'true'
 
   return defineConfig({
     build: {
@@ -97,11 +98,12 @@ export default ({ mode }: ConfigEnv) => {
           ]
         }
       }),
-      visualizer({
+      ...(analyze ? [visualizer({
+        filename: 'stats.html',
         open: false,
         gzipSize: true,
         brotliSize: true,
-      }),
+      })] : []),
     ],
     resolve: {
       alias: {

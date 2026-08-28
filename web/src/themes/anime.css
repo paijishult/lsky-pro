@@ -1,0 +1,162 @@
+/**
+ * Anime Theme (樱花粉 / 天蓝 / 紫色 / 圆润卡片 / 胶囊按钮 / 柔和微光)
+ *
+ * Scoped strictly to html[data-site-theme="anime"]
+ */
+
+/* ==========================================================================
+   Light Mode Tokens
+   ========================================================================== */
+html[data-site-theme="anime"] {
+  --site-theme-accent: #e85d93;
+  --site-theme-surface: #fff7fb;
+
+  --theme-primary: #e85d93;
+  --theme-primary-hover: #ef78a6;
+  --theme-primary-pressed: #cc477c;
+  --theme-primary-light: rgba(232, 93, 147, 0.12);
+  --theme-primary-focus: rgba(232, 93, 147, 0.35);
+
+  --theme-secondary: #8b5cf6;
+  --theme-secondary-hover: #a78bfa;
+  --theme-secondary-light: rgba(139, 92, 246, 0.12);
+
+  --theme-tertiary: #38bdf8;
+  --theme-tertiary-hover: #60a5fa;
+
+  --theme-bg: #fff5f8;
+  --theme-bg-gradient: linear-gradient(135deg, #fff2f6 0%, #f7f0fc 45%, #eff8ff 100%);
+  --theme-surface: #ffffff;
+  --theme-surface-glass: rgba(255, 255, 255, 0.88);
+  --theme-surface-subtle: #fdf2f8;
+  --theme-surface-hover: #fff0f5;
+
+  --theme-border: rgba(232, 93, 147, 0.22);
+  --theme-border-hover: rgba(232, 93, 147, 0.55);
+  --theme-border-subtle: rgba(244, 114, 182, 0.15);
+
+  --theme-text-main: #374151;
+  --theme-text-muted: #837380;
+  --theme-text-heading: #1f2937;
+  --theme-text-on-primary: #ffffff;
+
+  --theme-shadow-sm: 0 2px 8px rgba(232, 93, 147, 0.1);
+  --theme-shadow-md: 0 8px 24px -4px rgba(232, 93, 147, 0.16), 0 4px 8px -2px rgba(232, 93, 147, 0.08);
+  --theme-shadow-lg: 0 16px 36px -6px rgba(232, 93, 147, 0.22), 0 8px 16px -4px rgba(232, 93, 147, 0.12);
+  --theme-shadow-glow: 0 0 20px rgba(232, 93, 147, 0.25);
+
+  --theme-radius-sm: 10px;
+  --theme-radius-md: 18px;
+  --theme-radius-lg: 24px;
+  --theme-radius-pill: 9999px;
+
+  --theme-hero-overlay: linear-gradient(135deg, rgba(232, 93, 147, 0.65) 0%, rgba(139, 92, 246, 0.55) 50%, rgba(56, 189, 248, 0.45) 100%);
+  --theme-hero-bg-fallback: var(--theme-bg-gradient);
+  --theme-auth-bg-fallback: linear-gradient(135deg, #fff2f6 0%, #f7f0fc 45%, #eff8ff 100%);
+  --theme-empty-image: none;
+}
+
+/* ==========================================================================
+   Dark Mode Tokens
+   ========================================================================== */
+html[data-site-theme="anime"].dark,
+html[data-site-theme="anime"] .dark,
+html.dark[data-site-theme="anime"] {
+  --site-theme-accent: #f472b6;
+  --site-theme-surface: #20172c;
+
+  --theme-primary: #f472b6;
+  --theme-primary-hover: #fb7185;
+  --theme-primary-pressed: #e11d48;
+  --theme-primary-light: rgba(244, 114, 182, 0.18);
+  --theme-primary-focus: rgba(244, 114, 182, 0.45);
+
+  --theme-secondary: #a78bfa;
+  --theme-secondary-hover: #c4b5fd;
+  --theme-secondary-light: rgba(167, 139, 250, 0.18);
+
+  --theme-tertiary: #67e8f9;
+  --theme-tertiary-hover: #93c5fd;
+
+  --theme-bg: #150f1d;
+  --theme-bg-gradient: linear-gradient(135deg, #150f1d 0%, #1f132b 50%, #111522 100%);
+  --theme-surface: #22172f;
+  --theme-surface-glass: rgba(34, 23, 47, 0.85);
+  --theme-surface-subtle: #2b1d3d;
+  --theme-surface-hover: #35244c;
+
+  --theme-border: rgba(244, 114, 182, 0.28);
+  --theme-border-hover: rgba(244, 114, 182, 0.65);
+  --theme-border-subtle: rgba(244, 114, 182, 0.18);
+
+  --theme-text-main: #fdf4f8;
+  --theme-text-muted: #bca5c7;
+  --theme-text-heading: #ffffff;
+  --theme-text-on-primary: #1a0b16;
+
+  --theme-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --theme-shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.6), 0 0 16px rgba(232, 93, 147, 0.18);
+  --theme-shadow-lg: 0 16px 36px -6px rgba(0, 0, 0, 0.7), 0 0 24px rgba(232, 93, 147, 0.28);
+  --theme-shadow-glow: 0 0 25px rgba(244, 114, 182, 0.35);
+
+  --theme-hero-overlay: linear-gradient(135deg, rgba(20, 10, 30, 0.82) 0%, rgba(35, 18, 50, 0.78) 50%, rgba(15, 20, 35, 0.85) 100%);
+}
+
+/* ==========================================================================
+   Anime Theme Specific Decorative Details
+   ========================================================================== */
+
+/* Rounded pill cards & soft playful bouncy feel */
+html[data-site-theme="anime"] .n-card,
+html[data-site-theme="anime"] .plan-card,
+html[data-site-theme="anime"] .auth-card {
+  border-radius: var(--theme-radius-md);
+  border: 1.5px solid var(--theme-border);
+  box-shadow: var(--theme-shadow-md);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+html[data-site-theme="anime"] .plan-card:hover,
+html[data-site-theme="anime"] .recommended-plan:hover {
+  transform: translateY(-4px) scale(1.015);
+  box-shadow: var(--theme-shadow-lg);
+  border-color: var(--theme-border-hover);
+}
+
+/* Capsule buttons with bouncy hover */
+html[data-site-theme="anime"] .n-button:not(.n-button--circle):not(.n-button--round) {
+  border-radius: var(--theme-radius-pill);
+  font-weight: 500;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+}
+
+html[data-site-theme="anime"] .n-button:hover:not(.n-button--disabled) {
+  transform: translateY(-1.5px);
+}
+
+/* Hero section animated decorative candy badge */
+html[data-site-theme="anime"] .home-hero-stats {
+  border-radius: var(--theme-radius-pill);
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 4px 15px rgba(232, 93, 147, 0.3);
+  animation: theme-anime-pulse 4s ease-in-out infinite;
+}
+
+/* Anime pill tags and badges */
+html[data-site-theme="anime"] .n-tag,
+html[data-site-theme="anime"] .n-badge .n-badge-sup {
+  border-radius: var(--theme-radius-pill);
+  font-weight: 500;
+}
+
+/* Anime playful scrollbar */
+html[data-site-theme="anime"] ::-webkit-scrollbar-thumb {
+  background: rgba(232, 93, 147, 0.35);
+  border-radius: 9999px;
+}
+
+html[data-site-theme="anime"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(232, 93, 147, 0.6);
+}

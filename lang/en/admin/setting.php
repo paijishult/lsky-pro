@@ -116,6 +116,8 @@ return [
             'theme' => [
                 'label' => 'Site Theme',
                 'placeholder' => 'Please select site theme',
+                'helper_text' => 'Themes are loaded from resource directories. Built-in runtime themes include Anime, Technology, and Elegant. Invalid or missing directories safely fall back to Default.',
+                'invalid' => 'Please select an existing and valid theme directory.',
             ],
             'title' => [
                 'label' => 'Site Title',

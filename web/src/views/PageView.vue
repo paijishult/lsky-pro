@@ -49,10 +49,10 @@ watch(() => route.params?.slug, (newSlug) => {
     <div v-if="loading" class="w-full h-full flex items-center justify-center">
       <NSpin size="small" description="loading..."/>
     </div>
-    <div v-else class="min-h-full flex py-10">
-      <div class="container mx-auto px-4 max-w-screen-lg md:px-20 overflow-hidden">
-        <article 
-          class="prose dark:prose-invert max-w-none overflow-x-auto prose-img:mx-auto prose-headings:font-bold prose-a:text-blue-600 dark:prose-a:text-blue-400" 
+    <div v-else class="min-h-full flex py-10 page-view-container">
+      <div class="container mx-auto px-4 max-w-screen-lg md:px-20 overflow-hidden page-view-inner">
+        <article
+          class="prose dark:prose-invert max-w-none overflow-x-auto page-article prose-img:mx-auto prose-headings:font-bold prose-a:text-blue-600 dark:prose-a:text-blue-400"
           v-html="page?.content"
         ></article>
       </div>
@@ -77,7 +77,7 @@ watch(() => route.params?.slug, (newSlug) => {
   width: 100%;
 }
 
-.prose :deep(table td), 
+.prose :deep(table td),
 .prose :deep(table th) {
   border: 1px solid #ddd;
   padding: 8px;

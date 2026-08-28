@@ -7,6 +7,8 @@ use App\Filament\Pages\Auth\Login;
 use App\Filament\Pages\License;
 use App\Http\Middleware\Initialize;
 use App\Settings\AdminSettings;
+use App\Settings\SiteSettings;
+use App\Support\SiteTheme;
 use Filament\Enums\ThemeMode;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
@@ -53,6 +55,8 @@ class AdminPanelProvider extends PanelProvider
             ->sidebarWidth("15rem")
             ->maxContentWidth(MaxWidth::Full)
             ->profile(isSimple: false)
+            ->brandLogo(fn (): View => view('filament.theme.brand'))
+            ->favicon('/branding/favicon.ico')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')
@@ -78,6 +82,15 @@ class AdminPanelProvider extends PanelProvider
                 $panel->topNavigation((bool)$adminSettings->top_navigation)
                     ->darkMode((bool)$adminSettings->dark_mode)
                     ->defaultThemeMode(ThemeMode::tryFrom($adminSettings->default_theme_mode ?: ThemeMode::System->value));
+            })
+            ->renderHook(PanelsRenderHook::HEAD_START, function (): View {
+                $siteTheme = app(SiteTheme::class)->resolveRuntimeTheme(
+                    app(SiteSettings::class)->theme,
+                );
+
+                return view('filament.theme.head', [
+                    'siteTheme' => $siteTheme,
+                ]);
             })
             ->renderHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER, fn (): View => \view('filament.menus.home'))
             ->databaseTransactions()

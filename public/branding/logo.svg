@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none" role="img" aria-label="Image cloud">
+  <defs>
+    <linearGradient id="sky" x1="32" y1="24" x2="224" y2="232" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0EA5E9"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="album" x1="68" y1="74" x2="190" y2="204" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#DBEAFE"/>
+    </linearGradient>
+    <filter id="shadow" x="24" y="30" width="208" height="204" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#0F172A" flood-opacity=".22"/>
+    </filter>
+  </defs>
+  <rect x="20" y="20" width="216" height="216" rx="58" fill="url(#sky)"/>
+  <path d="M20 163C52 137 78 138 104 158C136 182 164 186 236 142V178C196 211 150 222 108 204C74 190 47 188 20 201V163Z" fill="#38BDF8" fill-opacity=".42"/>
+  <g filter="url(#shadow)">
+    <path d="M57 136.5V91C57 82.716 63.716 76 72 76H181C189.284 76 196 82.716 196 91V184C196 192.284 189.284 199 181 199H72C63.716 199 57 192.284 57 184V136.5Z" fill="url(#album)"/>
+    <path d="M72 76H181C189.284 76 196 82.716 196 91V103H57V91C57 82.716 63.716 76 72 76Z" fill="#F8FAFC"/>
+    <circle cx="82" cy="90" r="6" fill="#38BDF8"/>
+    <path d="M70 175L103 139L125 159L143 140L184 184H70V175Z" fill="#60A5FA"/>
+    <path d="M70 175L103 139L125 159L143 140L184 184H70V175Z" fill="#2563EB" fill-opacity=".22"/>
+    <circle cx="157" cy="119" r="13" fill="#FBBF24"/>
+  </g>
+  <path d="M42 65C47.5 48 63.5 36 82.5 36C97.5 36 111 43.5 119 55C124 51.8 130 50 136.5 50C155 50 170 65 170 83H69C54 83 42 75 42 65Z" fill="#FFFFFF" fill-opacity=".92"/>
+</svg>

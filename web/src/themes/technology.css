@@ -1,0 +1,183 @@
+/**
+ * Technology Theme (深海军蓝 / 青蓝 / 电紫 / 网格电路 / 轻玻璃 / 微弱发光)
+ *
+ * Scoped strictly to html[data-site-theme="technology"]
+ */
+
+/* ==========================================================================
+   Light Mode Tokens
+   ========================================================================== */
+html[data-site-theme="technology"] {
+  --site-theme-accent: #2f80ed;
+  --site-theme-surface: #f5f9ff;
+
+  --theme-primary: #2f80ed;
+  --theme-primary-hover: #4f97f1;
+  --theme-primary-pressed: #226ac8;
+  --theme-primary-light: rgba(47, 128, 237, 0.12);
+  --theme-primary-focus: rgba(47, 128, 237, 0.35);
+
+  --theme-secondary: #06b6d4;
+  --theme-secondary-hover: #22d3ee;
+  --theme-secondary-light: rgba(6, 182, 212, 0.12);
+
+  --theme-tertiary: #8b5cf6;
+  --theme-tertiary-hover: #a78bfa;
+
+  --theme-bg: #f0f5fc;
+  --theme-bg-gradient: linear-gradient(180deg, #f0f6ff 0%, #e8f1fa 100%);
+  --theme-surface: #ffffff;
+  --theme-surface-glass: rgba(255, 255, 255, 0.88);
+  --theme-surface-subtle: #ebf3fc;
+  --theme-surface-hover: #e2eeff;
+
+  --theme-border: rgba(47, 128, 237, 0.22);
+  --theme-border-hover: rgba(47, 128, 237, 0.65);
+  --theme-border-subtle: rgba(47, 128, 237, 0.12);
+
+  --theme-text-main: #0f172a;
+  --theme-text-muted: #475569;
+  --theme-text-heading: #020617;
+  --theme-text-on-primary: #ffffff;
+
+  --theme-shadow-sm: 0 2px 6px rgba(47, 128, 237, 0.08);
+  --theme-shadow-md: 0 6px 20px -2px rgba(47, 128, 237, 0.12), 0 2px 6px rgba(15, 23, 42, 0.06);
+  --theme-shadow-lg: 0 12px 30px -4px rgba(47, 128, 237, 0.2), 0 0 12px rgba(6, 182, 212, 0.18);
+  --theme-shadow-glow: 0 0 16px rgba(47, 128, 237, 0.35);
+
+  --theme-radius-sm: 4px;
+  --theme-radius-md: 8px;
+  --theme-radius-lg: 12px;
+  --theme-radius-pill: 8px;
+
+  --theme-font-mono: 'Fira Code', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --theme-hero-overlay: linear-gradient(180deg, rgba(15, 23, 42, 0.75) 0%, rgba(10, 25, 55, 0.85) 100%);
+  --theme-hero-bg-fallback: var(--theme-bg-gradient);
+  --theme-auth-bg-fallback: linear-gradient(180deg, #eaf2ff 0%, #f7fbff 100%);
+  --theme-empty-image: none;
+}
+
+/* ==========================================================================
+   Dark Mode Tokens
+   ========================================================================== */
+html[data-site-theme="technology"].dark,
+html[data-site-theme="technology"] .dark,
+html.dark[data-site-theme="technology"] {
+  --site-theme-accent: #38bdf8;
+  --site-theme-surface: #0e172e;
+
+  --theme-primary: #38bdf8;
+  --theme-primary-hover: #7dd3fc;
+  --theme-primary-pressed: #0284c7;
+  --theme-primary-light: rgba(56, 189, 248, 0.18);
+  --theme-primary-focus: rgba(56, 189, 248, 0.45);
+
+  --theme-secondary: #22d3ee;
+  --theme-secondary-hover: #67e8f9;
+  --theme-secondary-light: rgba(34, 211, 238, 0.18);
+
+  --theme-tertiary: #a78bfa;
+  --theme-tertiary-hover: #c4b5fd;
+
+  --theme-bg: #070c18;
+  --theme-bg-gradient: linear-gradient(180deg, #050812 0%, #080f22 50%, #0a142c 100%);
+  --theme-surface: #0d172e;
+  --theme-surface-glass: rgba(13, 23, 46, 0.82);
+  --theme-surface-subtle: #132242;
+  --theme-surface-hover: #1b2e59;
+
+  --theme-border: rgba(56, 189, 248, 0.28);
+  --theme-border-hover: rgba(34, 211, 238, 0.65);
+  --theme-border-subtle: rgba(56, 189, 248, 0.16);
+
+  --theme-text-main: #f1f5f9;
+  --theme-text-muted: #94a3b8;
+  --theme-text-heading: #ffffff;
+  --theme-text-on-primary: #04101e;
+
+  --theme-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.6);
+  --theme-shadow-md: 0 6px 20px rgba(0, 0, 0, 0.7), 0 0 15px rgba(56, 189, 248, 0.2);
+  --theme-shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.85), 0 0 24px rgba(34, 211, 238, 0.35);
+  --theme-shadow-glow: 0 0 20px rgba(56, 189, 248, 0.45);
+
+  --theme-hero-overlay: linear-gradient(180deg, rgba(5, 8, 18, 0.88) 0%, rgba(8, 16, 36, 0.92) 100%);
+}
+
+/* ==========================================================================
+   Technology Theme Specific Decorative Details
+   ========================================================================== */
+
+/* Subtle grid line backdrop */
+html[data-site-theme="technology"] .app-layout-content,
+html[data-site-theme="technology"] .auth-card-container {
+  background-image:
+    linear-gradient(to right, rgba(47, 128, 237, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(47, 128, 237, 0.05) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+html[data-site-theme="technology"].dark .app-layout-content,
+html[data-site-theme="technology"].dark .auth-card-container {
+  background-image:
+    linear-gradient(to right, rgba(56, 189, 248, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(56, 189, 248, 0.07) 1px, transparent 1px);
+}
+
+/* Precision Tech Cards */
+html[data-site-theme="technology"] .n-card,
+html[data-site-theme="technology"] .plan-card,
+html[data-site-theme="technology"] .auth-card {
+  border-radius: var(--theme-radius-md);
+  border: 1px solid var(--theme-border);
+  box-shadow: var(--theme-shadow-md);
+  backdrop-filter: blur(12px);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+html[data-site-theme="technology"] .plan-card:hover,
+html[data-site-theme="technology"] .recommended-plan:hover {
+  border-color: var(--theme-border-hover);
+  box-shadow: var(--theme-shadow-glow);
+}
+
+/* Tech Buttons: crisp chamfered corners & micro glow */
+html[data-site-theme="technology"] .n-button:not(.n-button--circle):not(.n-button--round) {
+  border-radius: var(--theme-radius-sm);
+  font-family: var(--theme-font-mono, inherit);
+  letter-spacing: 0.02em;
+  transition: all 0.2s ease;
+}
+
+html[data-site-theme="technology"] .n-button--primary-type:hover:not(.n-button--disabled) {
+  box-shadow: var(--theme-shadow-glow);
+}
+
+/* Hero Stats: Tech Data HUD Box */
+html[data-site-theme="technology"] .home-hero-stats {
+  border-radius: var(--theme-radius-sm);
+  background: rgba(13, 23, 46, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  box-shadow: 0 0 15px rgba(47, 128, 237, 0.35);
+  font-family: var(--theme-font-mono, inherit);
+}
+
+/* Monospace Numbers in Technology Theme */
+html[data-site-theme="technology"] .n-number-animation,
+html[data-site-theme="technology"] .app-sidebar-storage,
+html[data-site-theme="technology"] code,
+html[data-site-theme="technology"] .n-data-table-td {
+  font-feature-settings: 'tnum' on, 'lnum' on;
+}
+
+/* Tech scrollbar */
+html[data-site-theme="technology"] ::-webkit-scrollbar-thumb {
+  background: rgba(47, 128, 237, 0.4);
+  border-radius: 4px;
+}
+
+html[data-site-theme="technology"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(47, 128, 237, 0.7);
+  box-shadow: 0 0 8px rgba(6, 182, 212, 0.5);
+}

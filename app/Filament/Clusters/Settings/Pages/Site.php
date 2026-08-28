@@ -21,7 +21,6 @@ use Filament\Pages\Page;
 use Filament\Support\Enums\Alignment;
 use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Support\Arr;
 
 class Site extends Page implements HasForms
 {
@@ -110,9 +109,23 @@ class Site extends Page implements HasForms
      */
     protected function getSiteThemeFormComponent(): Component
     {
+        $options = [];
+
+        foreach (AppService::getThemes() as $theme) {
+            $options[$theme['id']] = $theme['name'];
+        }
+
         return Select::make('theme')
             ->label(__('admin/setting.site.fields.theme.label'))
-            ->options(Arr::pluck(AppService::getThemes(), 'name', 'id'))
+            ->options($options)
+            ->helperText(__('admin/setting.site.fields.theme.helper_text'))
+            // Use Filament's native membership rule instead of passing a
+            // Laravel validator closure to Component::rule(). Filament
+            // evaluates rule closures as component configuration closures.
+            ->in(array_keys($options))
+            ->validationMessages([
+                'in' => __('admin/setting.site.fields.theme.invalid'),
+            ])
             ->required()
             ->placeholder(__('admin/setting.site.fields.theme.placeholder'));
     }

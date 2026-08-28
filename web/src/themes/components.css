@@ -1,0 +1,454 @@
+/**
+ * Universal Component Styles Scoped to Built-in Themes (anime, technology, elegant)
+ *
+ * Scoped strictly to html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"])
+ * Default legacy theme is completely unaffected.
+ */
+
+/* ==========================================================================
+   1. Base & Layout
+   ========================================================================== */
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) body {
+  background-color: var(--theme-bg);
+  color: var(--theme-text-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .app-layout {
+  background-color: var(--theme-bg);
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .app-layout-content {
+  background-color: var(--theme-bg) !important;
+}
+
+/* ==========================================================================
+   2. Header & Navigation Bar
+   ========================================================================== */
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .app-header {
+  background-color: var(--theme-surface-glass) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--theme-border) !important;
+  color: var(--theme-text-main);
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .app-header a,
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .app-header .n-button {
+  color: var(--theme-text-main);
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .app-brand-link {
+  border-radius: var(--theme-radius-sm);
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .app-brand-link:hover {
+  filter: drop-shadow(0 4px 10px var(--theme-primary-focus));
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   3. Sidebar Navigation
+   ========================================================================== */
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .app-sidebar {
+  background-color: var(--theme-surface) !important;
+  border-right: 1px solid var(--theme-border) !important;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .app-sidebar-header {
+  background: var(--theme-surface-subtle) !important;
+  border-bottom: 1px solid var(--theme-border) !important;
+  border-right: 1px solid var(--theme-border) !important;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .app-sidebar-title {
+  color: var(--theme-text-main) !important;
+  font-weight: 700;
+}
+
+/* Sidebar Menu Item Active / Hover States */
+html[data-site-theme="anime"] .n-menu .n-menu-item-content--selected {
+  background: var(--theme-primary-light) !important;
+  border-radius: var(--theme-radius-pill);
+  font-weight: 600;
+}
+
+html[data-site-theme="anime"] .n-menu .n-menu-item-content:hover {
+  border-radius: var(--theme-radius-pill);
+}
+
+html[data-site-theme="technology"] .n-menu .n-menu-item-content--selected {
+  background: var(--theme-primary-light) !important;
+  border-left: 3px solid var(--theme-primary);
+  border-radius: var(--theme-radius-sm);
+  font-weight: 600;
+}
+
+html[data-site-theme="elegant"] .n-menu .n-menu-item-content--selected {
+  background: var(--theme-surface-subtle) !important;
+  border-left: 2px solid var(--theme-primary);
+  border-radius: var(--theme-radius-sm);
+  font-weight: 600;
+}
+
+/* Sidebar storage widget */
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .app-sidebar-storage {
+  border-top: 1px solid var(--theme-border-subtle);
+  background-color: var(--theme-surface-subtle);
+  color: var(--theme-text-muted) !important;
+}
+
+/* ==========================================================================
+   4. Footer
+   ========================================================================== */
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .app-footer {
+  background-color: var(--theme-surface) !important;
+  border-top: 1px solid var(--theme-border) !important;
+  color: var(--theme-text-muted) !important;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .app-footer a {
+  color: var(--theme-text-muted);
+  transition: color 0.2s ease;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .app-footer a:hover {
+  color: var(--theme-primary);
+}
+
+/* ==========================================================================
+   5. Home View (Hero, Stats, Buttons)
+   ========================================================================== */
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .home-hero-bg {
+  background-image: var(--theme-hero-bg-fallback);
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .home-hero-overlay {
+  background: var(--theme-hero-overlay) !important;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .home-hero-stats {
+  padding: 8px 18px;
+  font-weight: 500;
+}
+
+/* Home Buttons */
+html[data-site-theme="anime"] .home-hero-content .n-button {
+  border-radius: var(--theme-radius-pill);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+}
+
+html[data-site-theme="anime"] .home-hero-content .n-button:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 8px 25px rgba(232, 93, 147, 0.45);
+}
+
+html[data-site-theme="technology"] .home-hero-content .n-button {
+  border-radius: var(--theme-radius-sm);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  box-shadow: 0 0 12px rgba(47, 128, 237, 0.3);
+  letter-spacing: 0.03em;
+}
+
+html[data-site-theme="technology"] .home-hero-content .n-button:hover {
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.6);
+}
+
+html[data-site-theme="elegant"] .home-hero-content .n-button {
+  border-radius: var(--theme-radius-sm);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  letter-spacing: 0.05em;
+}
+
+html[data-site-theme="elegant"] .home-hero-content .n-button:hover {
+  border-color: rgba(212, 175, 55, 0.8);
+  box-shadow: 0 4px 16px rgba(166, 124, 82, 0.3);
+}
+
+/* ==========================================================================
+   6. Auth Pages & Cards (Login, Register, Forget Password)
+   ========================================================================== */
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .auth-card-container {
+  background-color: var(--theme-bg);
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .auth-card {
+  background: var(--theme-surface-glass) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--theme-border) !important;
+  box-shadow: var(--theme-shadow-lg) !important;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .auth-card .n-card-header__main {
+  color: var(--theme-text-heading);
+  font-weight: 700;
+}
+
+/* Socialite Login Buttons & Dividers */
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .auth-social-divider {
+  background-color: var(--theme-border) !important;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .auth-social-text {
+  background-color: var(--theme-surface) !important;
+  color: var(--theme-text-muted) !important;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .auth-social-btn {
+  border-radius: var(--theme-radius-sm);
+  transition: transform 0.2s ease;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .auth-social-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   7. Form Inputs, Selects, Checkboxes & Tabs
+   ========================================================================== */
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .n-input {
+  background-color: var(--theme-surface) !important;
+  border-radius: var(--theme-radius-sm);
+  border-color: var(--theme-border);
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .n-input--focus,
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .n-input:focus-within {
+  border-color: var(--theme-primary) !important;
+  box-shadow: 0 0 0 2px var(--theme-primary-focus) !important;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .n-tabs.n-tabs--segment-type .n-tabs-rail {
+  background-color: var(--theme-surface-subtle) !important;
+  border-radius: var(--theme-radius-pill);
+  padding: 3px;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .n-tabs.n-tabs--segment-type .n-tabs-tab--active {
+  background-color: var(--theme-surface) !important;
+  border-radius: var(--theme-radius-pill);
+  box-shadow: var(--theme-shadow-sm);
+  color: var(--theme-primary) !important;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   8. Plan Cards & Checkout View (user/plan/IndexView.vue & DetailView.vue)
+   ========================================================================== */
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .plan-card {
+  background-color: var(--theme-surface) !important;
+  border: 1px solid var(--theme-border) !important;
+  box-shadow: var(--theme-shadow-md);
+  border-radius: var(--theme-radius-md);
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .recommended-plan {
+  background-color: var(--theme-surface) !important;
+  border: 2px solid var(--theme-primary) !important;
+  box-shadow: var(--theme-shadow-lg);
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .plan-feature-icon {
+  color: var(--theme-primary) !important;
+}
+
+/* Checkout payment option cards */
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .payment-option {
+  background-color: var(--theme-surface) !important;
+  border: 1px solid var(--theme-border) !important;
+  border-radius: var(--theme-radius-sm);
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .payment-option:hover {
+  border-color: var(--theme-primary-hover) !important;
+  box-shadow: var(--theme-shadow-md);
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .payment-option-selected {
+  border-color: var(--theme-primary) !important;
+  background-color: var(--theme-primary-light) !important;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .payment-option-selected .radio-outer {
+  border-color: var(--theme-primary) !important;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .payment-option-selected .radio-inner,
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .feature-dot {
+  background-color: var(--theme-primary) !important;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .selected-badge {
+  background-color: var(--theme-primary-light) !important;
+  color: var(--theme-primary) !important;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .option-price,
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .text-primary {
+  color: var(--theme-primary) !important;
+}
+
+/* ==========================================================================
+   9. Tables & Data Tables (DataTable.vue, .n-data-table)
+   ========================================================================== */
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .n-data-table {
+  background-color: var(--theme-surface);
+  border: 1px solid var(--theme-border);
+  border-radius: var(--theme-radius-md);
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .n-data-table .n-data-table-th {
+  background-color: var(--theme-surface-subtle) !important;
+  color: var(--theme-text-heading) !important;
+  font-weight: 600;
+  border-bottom: 1px solid var(--theme-border) !important;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .n-data-table .n-data-table-td {
+  background-color: var(--theme-surface) !important;
+  color: var(--theme-text-main);
+  border-bottom: 1px solid var(--theme-border-subtle) !important;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .n-data-table .n-data-table-tr:hover .n-data-table-td {
+  background-color: var(--theme-surface-hover) !important;
+}
+
+/* ==========================================================================
+   10. Modals, Drawers, Popovers, Dropdowns, Notifications & Messages
+   ========================================================================== */
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .n-modal,
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .n-dialog,
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .n-popover,
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .n-dropdown-menu,
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .n-drawer .n-drawer-content {
+  background-color: var(--theme-surface) !important;
+  border: 1px solid var(--theme-border) !important;
+  box-shadow: var(--theme-shadow-lg) !important;
+  border-radius: var(--theme-radius-md);
+  color: var(--theme-text-main);
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .n-notification {
+  background-color: var(--theme-surface) !important;
+  border: 1px solid var(--theme-border) !important;
+  box-shadow: var(--theme-shadow-lg) !important;
+  border-radius: var(--theme-radius-md);
+}
+
+/* ==========================================================================
+   11. Photo Management, Explore & Share
+   ========================================================================== */
+
+/* Photo sticky filter bar */
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .photo-filter-bar {
+  background-color: var(--theme-surface-glass) !important;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--theme-border) !important;
+}
+
+/* Photo operate floating bar */
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .photo-operates-bar {
+  background: var(--theme-surface-glass) !important;
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--theme-border);
+  box-shadow: var(--theme-shadow-lg);
+  border-radius: var(--theme-radius-pill);
+}
+
+/* Photo Viewer Modal */
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .photo-viewer-close {
+  background: var(--theme-surface-glass) !important;
+  border: 1px solid var(--theme-border);
+  color: var(--theme-text-main) !important;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .photo-viewer-info {
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.85)) !important;
+}
+
+/* ==========================================================================
+   12. Image Uploader Floating Button & Queue
+   ========================================================================== */
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .floating-queue-button {
+  background-color: var(--theme-surface-glass) !important;
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--theme-border);
+  box-shadow: var(--theme-shadow-md) !important;
+  border-radius: var(--theme-radius-md) !important;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .floating-queue-button:hover {
+  box-shadow: var(--theme-shadow-lg) !important;
+  border-color: var(--theme-primary-hover);
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .file-item {
+  background-color: var(--theme-surface-subtle) !important;
+  border: 1px solid var(--theme-border-subtle);
+  border-radius: var(--theme-radius-sm);
+}
+
+/* ==========================================================================
+   13. Empty States, 404 & Content Page
+   ========================================================================== */
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .n-empty__icon {
+  width: clamp(7.5rem, 14vw, 10rem);
+  height: clamp(7.5rem, 14vw, 10rem);
+  line-height: normal;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .theme-empty-illustration {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .not-found-page {
+  background: var(--theme-bg) !important;
+  color: var(--theme-text-main) !important;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .not-found-illustration {
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 18px 30px var(--theme-primary-focus));
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .not-found-code {
+  color: var(--theme-primary) !important;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .page-article {
+  color: var(--theme-text-main);
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .page-article a {
+  color: var(--theme-primary) !important;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .page-article table td,
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .page-article table th {
+  border-color: var(--theme-border) !important;
+}
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) .page-article pre {
+  background-color: var(--theme-surface-subtle) !important;
+  border: 1px solid var(--theme-border);
+  border-radius: var(--theme-radius-sm);
+}

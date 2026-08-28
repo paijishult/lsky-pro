@@ -1,0 +1,102 @@
+/**
+ * Global Design Tokens & Utility Animations for Built-in Themes
+ *
+ * Scoped strictly to non-default themes: anime, technology, elegant.
+ * Default legacy theme remains completely untouched.
+ */
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+
+@keyframes theme-anime-float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(2deg);
+  }
+}
+
+@keyframes theme-anime-pulse {
+  0%, 100% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+}
+
+@keyframes theme-anime-petal {
+  0% {
+    transform: translateY(-10px) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.8;
+  }
+  85% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(120px) translateX(30px) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+@keyframes theme-tech-glow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(47, 128, 237, 0.35), 0 0 20px rgba(6, 182, 212, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(47, 128, 237, 0.55), 0 0 30px rgba(6, 182, 212, 0.3);
+  }
+}
+
+@keyframes theme-tech-scan {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 0% 100%;
+  }
+}
+
+@keyframes theme-elegant-fade {
+  0% {
+    opacity: 0.85;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.85;
+  }
+}
+
+/* ==========================================================================
+   Accessibility: Reduced Motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]),
+  html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) *,
+  html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) *::before,
+  html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   Accessibility: Focus Visible Rings
+   ========================================================================== */
+
+html:is([data-site-theme="anime"], [data-site-theme="technology"], [data-site-theme="elegant"]) :focus-visible {
+  outline: 2px solid var(--theme-primary, #0094c5);
+  outline-offset: 2px;
+}

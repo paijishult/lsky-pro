@@ -160,7 +160,7 @@ onBeforeUnmount(() => {
     :on-scroll="onScroll"
   >
     <Content class="max-w-full bg-white dark:bg-[var(--n-color)]">
-      <div class="flex items-center justify-between space-x-2 sticky top-0 z-[4] bg-gray-100 border-b border-transparent dark:bg-[var(--n-color)] dark:border-b-gray-800 p-2 w-full">
+      <div class="flex items-center justify-between space-x-2 sticky top-0 z-[4] bg-gray-100 border-b border-transparent dark:bg-[var(--n-color)] dark:border-b-gray-800 p-2 w-full photo-filter-bar">
         <div></div>
         <div class="flex justify-end space-x-2 grow md:grow-0 md:w-2/3">
           <NInput v-model:value="filters.q" class="max-w-44" :placeholder="$t('Enter keywords to search...')" clearable />

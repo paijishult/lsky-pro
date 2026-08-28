@@ -4,7 +4,6 @@ import {
 } from "@vicons/antd";
 import {AccessibilityOutline as AccessibilityOutlineIcon} from "@vicons/ionicons5";
 import {type Component, defineComponent, h} from "vue";
-import defaultAvatar from '@/assets/avatar.png'
 import qqIcon from '@/assets/icons/qq.png'
 import wxIcon from '@/assets/icons/wx.png'
 import sinaIcon from '@/assets/icons/sina.png'
@@ -18,10 +17,13 @@ import twitterIcon from '@/assets/icons/twitter.png'
 import dingtalkIcon from '@/assets/icons/dingtalk.png'
 import giteeIcon from '@/assets/icons/gitee.png'
 import githubIcon from '@/assets/icons/github.png'
+import {getSiteThemeAssets, readServerSiteTheme} from '@/themes'
 
 /**
  * 聚合登录方式对应的官方图标
  */
+const siteThemeAssets = getSiteThemeAssets(readServerSiteTheme())
+
 const aggregateCCIconMap: Record<string, string> = {
   qq: qqIcon,
   wx: wxIcon,
@@ -115,7 +117,7 @@ const getWithoutQueryUrl = (): string => {
  * @param avatar
  */
 const getUserAvatar = (avatar: string | undefined): string => {
-  return avatar || defaultAvatar
+  return avatar || siteThemeAssets.avatar
 }
 
 export default {

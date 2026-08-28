@@ -32,7 +32,7 @@ function renderIcon(icon: Component) {
 
 const menuOptions = computed<MenuOption[]>(() => {
   const options: MenuOption[] = []
-  
+
   // 根据配置决定是否显示广场
   if (configStore.configs?.app?.enable_explore) {
     options.push({
@@ -41,13 +41,13 @@ const menuOptions = computed<MenuOption[]>(() => {
       icon: renderIcon(SearchOutlineIcon),
     })
   }
-  
+
   options.push({
     label: t('Dashboard'),
     key: '/user/dashboard',
     icon: renderIcon(PieChartOutlineIcon),
   })
-  
+
   options.push({
     type: 'group',
     label: t('General'),
@@ -70,7 +70,7 @@ const menuOptions = computed<MenuOption[]>(() => {
       },
     ]
   })
-  
+
   options.push({
     type: 'group',
     label: t('Finance'),
@@ -88,7 +88,7 @@ const menuOptions = computed<MenuOption[]>(() => {
       },
     ]
   })
-  
+
   options.push({
     type: 'group',
     label: t('Others'),
@@ -116,7 +116,7 @@ const menuOptions = computed<MenuOption[]>(() => {
       }
     ]
   })
-  
+
   return options
 })
 const route = useRoute()
@@ -140,7 +140,7 @@ watch(() => route.path, value => activeKey.value = value)
   <Transition>
     <div
       v-if="deviceStore.isMobile && layoutStore.isSidebarOpen"
-      class="fixed inset-0 bg-black/50 z-[9] w-full"
+      class="fixed inset-0 bg-black/50 z-[9] w-full app-sidebar-backdrop"
       @click="layoutStore.setSidebarOpen(false)"
     />
   </Transition>
@@ -152,13 +152,13 @@ watch(() => route.path, value => activeKey.value = value)
     :position="deviceStore.isMobile ? 'absolute' : 'static'"
     :width="240"
     bordered
-    class="z-10"
+    class="z-10 app-sidebar"
     collapse-mode="transform"
-    content-class="flex flex-col min-h-full justify-between"
+    content-class="flex flex-col min-h-full justify-between app-sidebar-content"
   >
     <div class="flex flex-col pt-16">
-      <NLayoutHeader class="absolute top-0 z-[2] flex p-4 justify-center text-xl items-center h-16 overflow-hidden bg-gray-600 border-b border-r border-transparent dark:bg-gray-900 dark:border-gray-700">
-        <p class="truncate text-white font-medium cursor-pointer" @click="() => router.push('/')">{{ configStore.configs?.site.title }}</p>
+      <NLayoutHeader class="absolute top-0 z-[2] flex p-4 justify-center text-xl items-center h-16 overflow-hidden bg-gray-600 border-b border-r border-transparent dark:bg-gray-900 dark:border-gray-700 app-sidebar-header">
+        <p class="truncate text-white font-medium cursor-pointer app-sidebar-title" @click="() => router.push('/')">{{ configStore.configs?.site.title }}</p>
       </NLayoutHeader>
 
       <NMenu
@@ -170,11 +170,12 @@ watch(() => route.path, value => activeKey.value = value)
         :options="menuOptions"
         :root-indent="35"
         :on-update-value="changeMenu"
+        class="app-sidebar-menu"
       />
     </div>
 
     <!-- 容量展示 -->
-    <div class="flex flex-col space-y-1.5 px-6 py-4 text-gray-500 dark:text-gray-300">
+    <div class="flex flex-col space-y-1.5 px-6 py-4 text-gray-500 dark:text-gray-300 app-sidebar-storage">
       <p>{{ $t('Storage Usage')}} </p>
       <NProgress
         :percentage="((userStore.profile?.used_storage || 0) / (userStore.profile?.total_storage || 0)) * 100"

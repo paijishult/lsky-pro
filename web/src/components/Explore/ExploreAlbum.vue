@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import number from "../../utils/number";
-import EmptyImage from "../../assets/empty-image.png"
+import {getSiteThemeAssets, readServerSiteTheme} from "@/themes"
+
+const emptyImage = getSiteThemeAssets(readServerSiteTheme()).empty
 
 const props = defineProps({
   album: {
@@ -19,11 +21,11 @@ function open(path: string) {
   <div class="flex flex-col w-full hover:opacity-75 transition-all cursor-pointer" @click="() => open(`/explore/albums/${props.album.id}`)">
     <div class="flex overflow-hidden rounded-md h-[200px]">
       <div class="flex basis-2/3 border-r shrink-0">
-        <img :src="props.album.covers[0] || EmptyImage" alt="Album Cover" class="w-full h-full object-cover">
+        <img :src="props.album.covers[0] || emptyImage" alt="Album Cover" class="w-full h-full object-cover">
       </div>
       <div class="flex basis-1/3 flex-col">
-        <img :src="props.album.covers[1] || EmptyImage" alt="Album Cover" class="w-full h-full border-b object-cover shrink-0 overflow-hidden basis-1/2">
-        <img :src="props.album.covers[2] || EmptyImage" alt="Album Cover" class="w-full h-full object-cover shrink-0 overflow-hidden basis-1/2">
+        <img :src="props.album.covers[1] || emptyImage" alt="Album Cover" class="w-full h-full border-b object-cover shrink-0 overflow-hidden basis-1/2">
+        <img :src="props.album.covers[2] || emptyImage" alt="Album Cover" class="w-full h-full object-cover shrink-0 overflow-hidden basis-1/2">
       </div>
     </div>
     <div class="flex flex-col w-full mt-4 space-y-2">
