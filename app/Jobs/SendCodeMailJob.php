@@ -45,7 +45,7 @@ class SendCodeMailJob implements ShouldQueue, ShouldBeUnique, ShouldBeEncrypted
         return md5('send-mail-code:' . $this->event . $this->email);
     }
 
-    public function fail(Throwable $exception = null): void
+    public function fail(?Throwable $exception = null): void
     {
         Log::error("发送邮件验证码执行失败，{$exception?->getMessage()}", [
             'groupId' => $this->groupId,

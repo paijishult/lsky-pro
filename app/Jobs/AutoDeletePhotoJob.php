@@ -40,7 +40,7 @@ class AutoDeletePhotoJob implements ShouldQueue
         }
     }
 
-    public function fail(Throwable $exception = null): void
+    public function fail(?Throwable $exception = null): void
     {
         Log::error("照片自动删除执行失败，{$exception?->getMessage()}", [
             'photo' => $this->photo,

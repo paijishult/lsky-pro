@@ -62,7 +62,7 @@ class SendTicketReplyNotificationMailJob implements ShouldQueue, ShouldBeUnique,
         return [new RateLimited];
     }
 
-    public function fail(Throwable $exception = null): void
+    public function fail(?Throwable $exception = null): void
     {
         Log::error("发送工单回复通知邮件，{$exception?->getMessage()}", [
             'groupId' => $this->groupId,

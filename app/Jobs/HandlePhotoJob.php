@@ -42,7 +42,7 @@ class HandlePhotoJob implements ShouldQueue
         }
     }
 
-    public function fail(Throwable $exception = null): void
+    public function fail(?Throwable $exception = null): void
     {
         Log::error("图片处理执行失败，{$exception?->getMessage()}", [
             'photo' => $this->photo,

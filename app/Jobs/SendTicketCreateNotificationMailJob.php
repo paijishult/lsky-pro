@@ -51,7 +51,7 @@ class SendTicketCreateNotificationMailJob implements ShouldQueue, ShouldBeUnique
         return md5('send-mail-ticket-create-notification:' . $this->ticket->issue_no);
     }
 
-    public function fail(Throwable $exception = null): void
+    public function fail(?Throwable $exception = null): void
     {
         Log::error("给管理员发送工单创建通知邮件，{$exception?->getMessage()}", [
             'groupId' => $this->groupId,

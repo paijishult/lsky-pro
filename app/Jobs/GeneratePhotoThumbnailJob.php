@@ -39,7 +39,7 @@ class GeneratePhotoThumbnailJob implements ShouldQueue
         PhotoService::generateThumbnail($this->photo, $maxSize, $quality);
     }
 
-    public function fail(Throwable $exception = null): void
+    public function fail(?Throwable $exception = null): void
     {
         Log::error("图片生成缩略图生成失败，{$exception?->getMessage()}", [
             'photo' => $this->photo,

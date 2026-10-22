@@ -40,7 +40,7 @@ class UploadService
      * @return Photo
      * @throws ServiceException
      */
-    public function uploadImage(UploadedFile $file, User $user = null, array $merge = [], array $tags = []): Photo
+    public function uploadImage(UploadedFile $file, ?User $user = null, array $merge = [], array $tags = []): Photo
     {
         if (! $file->isValid()) {
             throw new ServiceException('文件资源无效');

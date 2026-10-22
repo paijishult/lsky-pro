@@ -1,4 +1,7 @@
-FROM php:8.4-fpm
+# CVE-2026-109618 / CVE-2026-109619: pin the patched PHP 8.4 security release.
+FROM php:8.4.27-fpm
+
+RUN php -r 'if (PHP_VERSION !== "8.4.27") { fwrite(STDERR, "Expected PHP 8.4.27, got " . PHP_VERSION . PHP_EOL); exit(1); }'
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Shanghai
@@ -104,4 +107,4 @@ EXPOSE 80
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD curl -f http://localhost:80/ || exit 1
 
-ENTRYPOINT ["/entrypoint.sh"] 
+ENTRYPOINT ["/entrypoint.sh"]

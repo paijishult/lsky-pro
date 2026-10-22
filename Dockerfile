@@ -1,4 +1,4 @@
-# lskyPai-PRO v2.3 Dockerfile（php:8.4-fpm + nginx + supervisor）
+# lskyPai-PRO v2.3 Dockerfile（php:8.4.27-fpm + nginx + supervisor）
 # 扩展 = 官方 docker/Dockerfile 全量（保证与官方行为一致，无缺扩展风险）
 # 优化点：
 #   1. 源码内置 /var/www/lsky，挂载 /var/www/html 兼容 halcyonazure 标准（空目录自动拷贝）
@@ -6,7 +6,10 @@
 #   3. .dockerignore 剔除源码包冗余（测试/IDE/前端源码/日志），镜像大小可控
 #   4. 构建全离线（vendor 已随源码包含，无需 composer 联网）
 
-FROM php:8.4-fpm
+FROM php:8.4.27-fpm
+
+# CVE-2026-109618 / CVE-2026-109619: pin the patched PHP 8.4 security release.
+RUN php -r 'if (PHP_VERSION !== "8.4.27") { fwrite(STDERR, "Expected PHP 8.4.27, got " . PHP_VERSION . PHP_EOL); exit(1); }'
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Shanghai

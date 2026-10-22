@@ -46,7 +46,7 @@ class SendCodeSmsJob implements ShouldQueue, ShouldBeUnique, ShouldBeEncrypted
         return md5('send-sms-code:' . $this->event . $this->countryCode . $this->phone);
     }
 
-    public function fail(Throwable $exception = null): void
+    public function fail(?Throwable $exception = null): void
     {
         Log::error("发送短信验证码执行失败，{$exception?->getMessage()}", [
             'groupId' => $this->groupId,

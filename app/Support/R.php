@@ -24,7 +24,7 @@ class R
         return \response()->json(array_filter(compact('status', 'message', 'data', 'time')));
     }
 
-    public static function error(mixed $message = 'fail', array $data = null): Response
+    public static function error(mixed $message = 'fail', ?array $data = null): Response
     {
         return self::result($message, 'error', $data);
     }

@@ -52,7 +52,7 @@ class CancelOrderJob implements ShouldQueue, ShouldBeUnique, ShouldBeEncrypted
         return md5('cancel-order:' . $this->order->trade_no);
     }
 
-    public function fail(Throwable $exception = null): void
+    public function fail(?Throwable $exception = null): void
     {
         Log::error("延时取消未支付订单执行失败，{$exception?->getMessage()}", [
             'photo' => $this->order,

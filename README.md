@@ -8,7 +8,7 @@
 
 [![Version](https://img.shields.io/badge/version-2.3-7c3aed?style=for-the-badge)](https://github.com/clawpai/lsky-pro/releases)
 [![Docker](https://img.shields.io/badge/Docker-amd64%20%7C%20arm64-2496ed?style=for-the-badge&logo=docker&logoColor=white)](https://github.com/clawpai/lsky-pro/pkgs/container/lsky-pro)
-[![PHP](https://img.shields.io/badge/PHP-8.4-777bb4?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/)
+[![PHP](https://img.shields.io/badge/PHP-8.4.27-777bb4?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/releases/8_4_27.php)
 [![License](https://img.shields.io/badge/license-open%20source-22c55e?style=for-the-badge)](LICENSE.md)
 
 **把图片交给你自己的存储，把访问速度和数据安全交给 lskyPai-PRO。**
@@ -68,7 +68,7 @@ lskyPai-PRO 是基于 Lsky Pro 的自托管图床增强发行，适合个人图�
 - Filament 中文后台管理。
 - 队列、调度器和定时任务由 Supervisor 管理。
 - Docker 自动安装，支持 SQLite 和 MySQL。
-- PHP 8.4、nginx、PHP-FPM、Supervisor 一体化镜像。
+- PHP 8.4.27、nginx、PHP-FPM、Supervisor 一体化镜像。
 - GitHub Actions 自动构建并发布 GHCR 多架构镜像。
 
 ## 快速部署
@@ -315,7 +315,7 @@ docker restart lsky-pro
 
 环境要求：
 
-- PHP 8.4；
+- PHP 8.4.27；
 - Composer；
 - Node.js 22；
 - Yarn；
@@ -354,6 +354,7 @@ GitHub Actions 会在推送 `main` 或 `v*` 标签时构建并推送 GHCR 镜像
 - 不要公开上传生产数据库、日志、备份、缓存或用户头像数据。
 - 图片迁移必须遵循“目标核验后才删除源”的顺序。
 - 公共仓库中的域名、IP 和路径请使用示例值。
+- 镜像固定使用 PHP 8.4.27，已包含 CVE-2026-109618 和 CVE-2026-109619 的修复。
 
 ## 许可证
 
