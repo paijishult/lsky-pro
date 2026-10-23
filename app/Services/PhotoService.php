@@ -9,7 +9,6 @@ use App\Exceptions\ServiceException;
 use App\Facades\ScanService;
 use App\Models\Driver;
 use App\Models\Photo;
-use App\Models\Storage;
 use App\Models\Tag;
 use App\PhotoStatus;
 use App\ScanResultStatus;
@@ -35,26 +34,15 @@ class PhotoService
      */
     public function sendImageResponse(string $prefix, string $path): mixed
     {
-        // 通过前缀获取储存
-        // TODO 优化性能
-        /** @var Storage $storage */
-        $storage = Storage::query()
-            ->has('processDrivers')
-            ->with('processDrivers')
-            ->where('prefix', $prefix)
-            ->first();
-
-        // 无云处理驱动的储存（如本地/WebDAV 策略）：走智能回源，按 pathname 查照片记录，
-        // 从照片所属储存读取（支持任意存储间迁移后原链接不变），并写入本地缓存供 nginx 直出
-        if (is_null($storage)) {
-            return $this->sendImageFromPathname($prefix, $path);
+        $photo = app(PhotoUrlResolver::class)->resolve(trim($prefix . '/' . $path, '/'));
+        if ($photo === null) {
+            abort(404, 'Image not found.');
         }
 
-        /** @var Driver $processDriver */
-        $processDriver = $storage->processDrivers?->first();
-
-        if (is_null($processDriver)) {
-            return $this->sendImageFromPathname($prefix, $path);
+        $storage = $photo->storage;
+        $processDriver = $storage->processDrivers->first();
+        if ($processDriver === null) {
+            return $this->sendOriginal($photo);
         }
 
         $server = \App\Facades\StorageService::getProcessServerFactory($storage, $processDriver->options->getArrayCopy());
@@ -76,7 +64,7 @@ class PhotoService
         $server->setPresets($getPresets(false));
 
         try {
-            return $server->getImageResponse($path, $params);
+            return $server->getImageResponse($photo->pathname, $params);
         } catch (FileNotFoundException $e) {
             abort(404, 'Image not found.');
         } catch (\League\Glide\Filesystem\FilesystemException $e) {
@@ -84,80 +72,29 @@ class PhotoService
         }
     }
 
-    /**
-     * 智能回源：按 pathname 查找照片记录，从照片所属储存读取文件流式输出，
-     * 并写入本地缓存（storage/app/uploads，即 public/i 符号链接目标）供 nginx 静态直出，
-     * 保证任意存储间迁移后原链接不变（本地图仍走 nginx 直出，PHP 零参与）。
-     *
-     * @param string $prefix 访问前缀（可能是真实前缀，也可能是 pathname 第一段）
-     * @param string $path 剩余路径
-     * @return mixed
-     */
-    protected function sendImageFromPathname(string $prefix, string $path): mixed
+    protected function sendOriginal(Photo $photo): mixed
     {
-        // 兼容两种情况：pathname 含 path（WebDAV 无前缀年份路径）/ pathname 为完整相对路径（本地 /i/ 前缀）
-        $pathnames = collect([$path, "{$prefix}/{$path}"])
-            ->filter(fn(string $p): bool => $p !== '' && $p !== '/')
-            ->unique()
-            ->values()
-            ->all();
-
-        /** @var Photo|null $photo */
-        $photo = Photo::query()
-            ->with('storage')
-            ->whereIn('pathname', $pathnames)
-            ->orderByDesc('id')
-            ->first();
-
-        if (is_null($photo) || is_null($photo->storage)) {
-            abort(404, 'Image not found.');
-        }
-
-        // 本地缓存路径：storage/app/uploads/{pathname}（= public/i 符号链接目标，nginx 可直接静态直出）
-        $cachePath = storage_path('app/uploads/' . $photo->pathname);
-
         try {
             $stream = $photo->filesystem()->readStream($photo->pathname);
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             abort(404, 'Image not found.');
         }
-
         if (! is_resource($stream)) {
             abort(404, 'Image not found.');
         }
 
-        // 写入本地缓存（失败不影响本次输出，仅跳过缓存）
-        $cached = false;
-        try {
-            $directory = dirname($cachePath);
-            if (! is_dir($directory)) {
-                @mkdir($directory, 0755, true);
-            }
-            $cacheStream = fopen($cachePath, 'wb');
-            if ($cacheStream !== false) {
-                stream_copy_to_stream($stream, $cacheStream);
-                fclose($cacheStream);
-                @chmod($cachePath, 0644);
-                $cached = true;
-            }
-        } catch (Throwable $e) {
-            // 缓存写失败忽略，走流式输出
-        }
-
-        $headers = [
-            'Cache-Control' => 'public, max-age=2592000',
-            'Content-Type' => $photo->mimetype ?: 'application/octet-stream',
-        ];
-
-        // 已写缓存：直接输出缓存文件（响应式 file，支持 Range）
-        if ($cached && is_file($cachePath)) {
-            return response()->file($cachePath, $headers);
-        }
-
-        // 缓存失败：流式输出
+        // Stream once through Laravel; public upload directories are not an origin cache.
         return response()->stream(function () use ($stream) {
-            fpassthru($stream);
-        }, 200, $headers);
+            try {
+                fpassthru($stream);
+            } finally {
+                fclose($stream);
+            }
+        }, 200, [
+            'Content-Type' => $photo->mimetype ?: 'application/octet-stream',
+            'Cache-Control' => 'public, max-age=300, must-revalidate',
+            'X-Content-Type-Options' => 'nosniff',
+        ]);
     }
 
     /**

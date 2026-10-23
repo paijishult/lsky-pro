@@ -15,7 +15,10 @@ class SendImageController extends Controller
     public function __invoke(string $path)
     {
         try {
-            return PhotoService::sendImageResponse(Str::before($path, '/'), Str::after($path, '/'));
+            return PhotoService::sendImageResponse(
+                Str::contains($path, '/') ? Str::before($path, '/') : '',
+                Str::contains($path, '/') ? Str::after($path, '/') : $path,
+            );
         } catch (ServiceException $e) {
             Log::warning('云处理输出图片失败', [
                 'message' => $e->getMessage(),

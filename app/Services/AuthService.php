@@ -141,7 +141,7 @@ class AuthService
     {
         $driverId = (int) data_get($content, 'driver_id');
         $openid = (string) data_get($content, 'openid');
-        $type = data_get($content, 'type');
+        $type = (string) (data_get($content, 'type') ?? '');
         if ($driverId <= 0 || $openid === '') {
             throw new \RuntimeException('第三方授权信息无效。');
         }
@@ -149,19 +149,16 @@ class AuthService
         $existing = OAuth::query()
             ->where('driver_id', $driverId)
             ->where('openid', $openid)
-            ->when(! is_null($type) && $type !== '', fn ($query) => $query->where('type', $type))
+            ->where('type', $type)
             ->first();
-        if (! is_null($existing) && $existing->user_id !== $user->id) {
+        if (! is_null($existing) && (int) $existing->user_id !== (int) $user->id) {
             throw new \RuntimeException('该第三方账号已绑定其他用户，无法重复绑定。');
         }
 
-        $attributes = ['driver_id' => $driverId, 'openid' => $openid];
-        if (! is_null($type) && $type !== '') {
-            $attributes['type'] = $type;
-        }
+        $attributes = ['driver_id' => $driverId, 'openid' => $openid, 'type' => $type];
 
         $oauth = $user->oauth()->firstOrNew($attributes);
-        $oauth->fill($content);
+        $oauth->fill([...$content, ...$attributes]);
 
         return $oauth->save();
     }

@@ -19,7 +19,7 @@ env:
 
 jobs:
   test:
-    name: PHP theme tests
+    name: PHP regression tests
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -47,12 +47,8 @@ jobs:
       - name: Generate test application key
         run: php artisan key:generate --force
 
-      - name: Run site theme tests
-        run: >-
-          php artisan test
-          tests/Unit/SiteThemeTest.php
-          tests/Unit/AppServiceThemesTest.php
-          tests/Feature/SiteThemeFeatureTest.php
+      - name: Run PHP regression tests
+        run: php artisan test
 
   registry-access:
     name: Verify GHCR write access

@@ -8,7 +8,7 @@ use App\Settings\AppSettings;
 use Database\Seeders\InitializeSeeder;
 use Exception;
 use Illuminate\Console\Command;
-use Illuminate\Database\Console\Migrations\FreshCommand;
+use Illuminate\Database\Console\Migrations\MigrateCommand;
 use Illuminate\Database\Console\Seeds\SeedCommand;
 use Illuminate\Foundation\Console\KeyGenerateCommand;
 use Illuminate\Foundation\Console\StorageLinkCommand;
@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command as CommandAlias;
 use Throwable;
@@ -51,7 +52,7 @@ class InstallCommand extends Command
         {--admin-username= : Admin Name}
         {--admin-email= : Admin Email}
         {--admin-password= : Admin Password}
-        {--f|force : Forced overlay installation}';
+        {--f|force : Allow installation in production without resetting existing data}';
 
     /**
      * The console command description.
@@ -66,12 +67,10 @@ class InstallCommand extends Command
     public function handle(): int
     {
         try {
-            if (AppService::isInstalled() && !$this->option('force')) {
-                error('lskyPai-PRO 已经安装过了，如需重新安装请删除程序根目录 installed.lock 和 .env 文件');
+            if (AppService::isInstalled()) {
+                error('lskyPai-PRO 已安装，请使用 php artisan migrate --force 升级数据库。');
                 return CommandAlias::FAILURE;
             }
-
-            File::delete(base_path('.env'));
 
             // 运行环境检测
             $checks = collect(AppService::getAppRequirements());
@@ -126,8 +125,12 @@ class InstallCommand extends Command
                     'password' => $env['DB_PASSWORD'],
                 ];
             } else {
-                // 创建 sqlite 文件
-                File::put($this->getSqliteFilepath(), '');
+                $env['DB_DATABASE'] = $this->option('db-database') ?: $this->getSqliteFilepath();
+                $dbConfig['database'] = $env['DB_DATABASE'];
+                if ($env['DB_DATABASE'] !== ':memory:' && ! File::exists($env['DB_DATABASE'])) {
+                    File::ensureDirectoryExists(dirname($env['DB_DATABASE']));
+                    File::put($env['DB_DATABASE'], '');
+                }
             }
 
             $user = [
@@ -153,8 +156,14 @@ class InstallCommand extends Command
                 throw new Exception("数据库连接失败: {$e->getMessage()}");
             }
 
+            if (Schema::getTableListing() !== []) {
+                throw new Exception('数据库已有数据表，拒绝重新安装。请恢复原 .env、APP_KEY 和 installed.lock，再执行 php artisan migrate --force。现有数据已保留。');
+            }
+
             // 1.生成 .env 文件
-            AppService::generateEnvFile();
+            if (! File::exists(app()->environmentFilePath())) {
+                AppService::generateEnvFile();
+            }
 
             // 2.生成 key
             if (CommandAlias::SUCCESS !== $this->call(KeyGenerateCommand::class, ['--force' => true])) {
@@ -162,7 +171,7 @@ class InstallCommand extends Command
             }
 
             // 3.执行数据库迁移
-            if (CommandAlias::SUCCESS !== $this->call(FreshCommand::class, ['--force' => true])) {
+            if (CommandAlias::SUCCESS !== $this->call(MigrateCommand::class, ['--force' => true])) {
                 throw new Exception('数据库初始化失败');
             }
 
@@ -196,7 +205,6 @@ class InstallCommand extends Command
 
             File::put(base_path('installed.lock'), '');
         } catch (Throwable $e) {
-            $this->init();
             error("安装失败：{$e->getMessage()}");
             error("详情错误信息：{$e->getTraceAsString()}");
             return CommandAlias::FAILURE;
@@ -344,20 +352,6 @@ class InstallCommand extends Command
             placeholder: '请输入管理员密码',
             required: true,
         );
-    }
-
-    /**
-     * 安装前初始化
-     *
-     * @return void
-     */
-    protected function init(): void
-    {
-        File::delete([
-            base_path('.env'), // 删除 .env 文件
-            $this->getSqliteFilepath(), // 删除 SQLite 数据库文件
-            base_path('installed.lock'), // 删除锁文件
-        ]);
     }
 
     protected function welcome(): void

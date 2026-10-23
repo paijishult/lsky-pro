@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -12,13 +14,23 @@ return new class extends Migration
     public function up(): void
     {
         DB::table('oauth')->whereNull('type')->update(['type' => '']);
-        DB::statement("ALTER TABLE oauth MODIFY type VARCHAR(32) NOT NULL DEFAULT '' COMMENT '三方登录方式（聚合驱动用：qq/wx/baidu 等）'");
-        DB::statement('ALTER TABLE oauth ADD UNIQUE oauth_driver_type_openid_unique (driver_id, type, openid)');
+        Schema::table('oauth', function (Blueprint $table) {
+            $table->string('type', 32)->nullable(false)->default('')
+                ->comment('三方登录方式（聚合驱动用：qq/wx/baidu 等）')->change();
+        });
+        Schema::table('oauth', function (Blueprint $table) {
+            $table->unique(['driver_id', 'type', 'openid'], 'oauth_driver_type_openid_unique');
+        });
     }
 
     public function down(): void
     {
-        DB::statement('ALTER TABLE oauth DROP INDEX oauth_driver_type_openid_unique');
-        DB::statement("ALTER TABLE oauth MODIFY type VARCHAR(32) NULL DEFAULT NULL COMMENT '三方登录方式（聚合驱动用：qq/wx/baidu 等）'");
+        Schema::table('oauth', function (Blueprint $table) {
+            $table->dropUnique('oauth_driver_type_openid_unique');
+        });
+        Schema::table('oauth', function (Blueprint $table) {
+            $table->string('type', 32)->nullable()->default(null)
+                ->comment('三方登录方式（聚合驱动用：qq/wx/baidu 等）')->change();
+        });
     }
 };

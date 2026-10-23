@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Facades\StorageService;
 use App\PhotoStatus;
+use App\Support\LegacyOriginCache;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
@@ -139,7 +140,14 @@ class Photo extends Model
 
     protected static function booted(): void
     {
+        static::deleting(function (self $photo) {
+            LegacyOriginCache::forget($photo);
+        });
+
         static::deleted(queueable(function (self $photo) {
+            if (self::where('storage_id', $photo->storage_id)->where('pathname', $photo->pathname)->exists()) {
+                return;
+            }
             // 图片删除后删除文件资源
             $photo->filesystem()->delete($photo->pathname);
             // 同时删除本地缩略图
