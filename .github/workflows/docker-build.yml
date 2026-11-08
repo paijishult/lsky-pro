@@ -50,6 +50,9 @@ jobs:
       - name: Run PHP regression tests
         run: php artisan test
 
+      - name: Validate container entrypoint
+        run: bash -n docker/entrypoint.sh
+
   registry-access:
     name: Verify GHCR write access
     needs: test

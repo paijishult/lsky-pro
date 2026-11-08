@@ -459,7 +459,7 @@
     "docker/config/php.ini": "c312157bf7c49652878bb3599c4c8159",
     "docker/config/supervisord.conf": "e3bdaa28f6d764875c2233c732163fe1",
     "docker/config/www.conf": "927bc119371d3e1a1eb2ef98e7710ba8",
-    "docker/entrypoint.sh": "afd19e738ad3a896844173d51d3f8437",
+    "docker/entrypoint.sh": "4399c1e4946a03f5416b8afe1605e9cf",
     "hashes.json": "0a3e416b88dee7817b172ba7e45586ae",
     "install.sh": "7f4472c17c21397df7b38ac0043017b1",
     "lang/en.json": "9c4c83c8e2fdb80739cf91915bfd7b96",

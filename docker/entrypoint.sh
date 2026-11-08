@@ -90,6 +90,11 @@ chown -R www-data:www-data /var/www/html
 chown -R www-data:www-data /run/php
 chmod -R 775 /var/www/html
 chmod -R 755 /var/www/html/storage
+# 保留私有磁盘权限，避免重启时将临时上传重新设为全局可读。
+if [ -d /var/www/html/storage/app/private ]; then
+    find /var/www/html/storage/app/private -type d -exec chmod 700 {} +
+    find /var/www/html/storage/app/private -type f -exec chmod 600 {} +
+fi
 chmod -R 755 /var/www/html/bootstrap/cache
 chmod -R 755 /var/www/html/database
 chmod -R 755 /run/php
