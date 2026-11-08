@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Database\Console\Migrations\MigrateCommand;
+use Illuminate\Foundation\Console\ConfigClearCommand;
 use Illuminate\Queue\Console\RestartCommand;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -103,6 +104,11 @@ class UpgradeCommand extends Command
             } catch (Throwable $e) {
                 // 失败后继续执行后续的操作
                 $this->error($e->getMessage());
+            }
+
+            // 配置文件已更新，必须清除旧配置缓存，避免安全修复未生效。
+            if ($this->call(ConfigClearCommand::class) !== CommandAlias::SUCCESS) {
+                throw new Exception('Failed to clear cached configuration.');
             }
 
             // 执行数据库迁移

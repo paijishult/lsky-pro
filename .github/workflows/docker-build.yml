@@ -2,7 +2,7 @@ name: Build & Push Docker Image
 
 on:
   push:
-    branches: [main]
+    branches: [main, 'codex/**']
     tags: ['v*']
   workflow_dispatch:
 
@@ -53,6 +53,8 @@ jobs:
   registry-access:
     name: Verify GHCR write access
     needs: test
+    # Work branches run the full test suite without publishing an image.
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     permissions:
       contents: read

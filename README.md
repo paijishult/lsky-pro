@@ -349,6 +349,28 @@ GitHub Actions 会在推送 `main` 或 `v*` 标签时构建并推送 GHCR 镜像
 
 ## 安全说明
 
+### Livewire 临时上传安全修复
+
+本项目已将 `config/livewire.php` 中的 `temporary_file_upload.disk` 固定为 `local`，并在 `config/filesystems.php` 中显式设置该磁盘的文件和目录可见性为 `private`。临时文件存入不可公网访问的 `storage/app/private/livewire-tmp`。不要改回 `null`：项目默认使用 `public` 磁盘，跟随默认磁盘会使尚未完成业务校验的临时文件暴露到公网。
+
+已有部署需更新上述配置、执行 `php artisan optimize:clear`，清空旧的 `storage/app/public/livewire-tmp` 目录，并重启队列或应用服务。只清理这个临时目录，保留其他图片和业务数据。通过后台升级或 `app:upgrade` 更新时，会在重启队列前自动清除配置缓存，确保新配置生效。
+
+本仓库 Docker 部署的程序路径是 `/var/www/html`。如果挂载了整个程序目录，更新镜像不会覆盖挂载目录里的旧配置。未自定义上述两个配置文件时，可在已获取本次修复源码的仓库根目录执行以下命令，更新现有容器：
+
+```bash
+docker cp ./config/livewire.php lsky-pro:/var/www/html/config/livewire.php
+docker cp ./config/filesystems.php lsky-pro:/var/www/html/config/filesystems.php
+docker exec -w /var/www/html lsky-pro php artisan optimize:clear
+docker exec lsky-pro sh -c 'if [ -d /var/www/html/storage/app/public/livewire-tmp ]; then find /var/www/html/storage/app/public/livewire-tmp -mindepth 1 -delete; fi'
+docker restart lsky-pro
+```
+
+命令中的 `lsky-pro` 请替换为实际容器名；如有自定义配置，仅合并 `temporary_file_upload.disk = local` 以及 `filesystems.disks.local` 的 `visibility = private`、`directory_visibility = private` 设置，确认 `local.root` 保持在非公开目录，再执行缓存清理和重启。未持久化数据的容器，先备份程序、存储目录及数据库，再调整挂载；不要直接删除容器。
+
+同时检查 `storage/app/public` 是否存在非本人上传的文件；如发现异常，排查入侵并更换服务器和数据库密码。
+
+### 其他安全建议
+
 - 不要把数据库密码、WebDAV 密码、OAuth AppKey、SSH 私钥或 GitHub Token 写进仓库。
 - 生产部署必须设置强管理员密码和 HTTPS。
 - 不要公开上传生产数据库、日志、备份、缓存或用户头像数据。
