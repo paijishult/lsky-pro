@@ -460,7 +460,7 @@
     "docker/config/supervisord.conf": "e3bdaa28f6d764875c2233c732163fe1",
     "docker/config/www.conf": "927bc119371d3e1a1eb2ef98e7710ba8",
     "docker/entrypoint.sh": "4399c1e4946a03f5416b8afe1605e9cf",
-    "hashes.json": "0a3e416b88dee7817b172ba7e45586ae",
+    "hashes.json": "c5999dcb783cb747352ec96b56cf4c3a",
     "install.sh": "7f4472c17c21397df7b38ac0043017b1",
     "lang/en.json": "9c4c83c8e2fdb80739cf91915bfd7b96",
     "lang/en/admin.php": "e395a4b3a8b0915ab9a7edc3d5113b18",
@@ -22071,5 +22071,5 @@
     "tests/Feature/StorageSafetyTest.php": "1233474ef7774a36edbb24a98cd98648",
     "tests/bootstrap.php": "ec210e3308dfe3feb69f17b2fe579080",
     "tests/Feature/LivewireUploadSafetyTest.php": "0bf6eb9775663e606845fe88ecf6f9d8",
-    "tests/Feature/UpgradeConfigurationSafetyTest.php": "d251539025aa16776ec01d93916b13df"
+    "tests/Feature/UpgradeConfigurationSafetyTest.php": "14488d043d29f2ed0cd2a9100ccd45f2"
 }

@@ -31,8 +31,10 @@ class UpgradeConfigurationSafetyTest extends TestCase
             $this->app->useStoragePath($directory . '/storage');
             $oldConfig = "<?php return ['temporary_file_upload' => ['disk' => null]];";
             $newConfig = "<?php return ['temporary_file_upload' => ['disk' => 'local']];";
+            $oldHashes = json_encode(['config/livewire.php' => md5($oldConfig), 'hashes.json' => 'previous-release']);
+            $newHashes = json_encode(['config/livewire.php' => md5($newConfig), 'hashes.json' => md5($oldHashes)]);
             file_put_contents(config_path('livewire.php'), $oldConfig);
-            file_put_contents(base_path('hashes.json'), json_encode(['config/livewire.php' => md5($oldConfig)]));
+            file_put_contents(base_path('hashes.json'), $oldHashes);
             $cachePath = $this->app->getCachedConfigPath();
             file_put_contents($cachePath, '<?php return [];');
             file_put_contents(base_path('upgrading.lock'), '');
@@ -40,7 +42,7 @@ class UpgradeConfigurationSafetyTest extends TestCase
             $zip = new ZipArchive();
             self::assertTrue($zip->open(base_path('upgrade.zip'), ZipArchive::CREATE));
             $zip->addFromString('config/livewire.php', $newConfig);
-            $zip->addFromString('hashes.json', json_encode(['config/livewire.php' => md5($newConfig)]));
+            $zip->addFromString('hashes.json', $newHashes);
             $zip->close();
 
             $command = new class extends UpgradeCommand {
@@ -64,6 +66,7 @@ class UpgradeConfigurationSafetyTest extends TestCase
             $exit = $console->run(new ArrayInput(['command' => 'app:upgrade', 'path' => 'upgrade.zip']), $output);
             self::assertSame(0, $exit, $output->fetch());
             self::assertSame($newConfig, file_get_contents(config_path('livewire.php')));
+            self::assertSame($newHashes, file_get_contents(base_path('hashes.json')));
             self::assertFileDoesNotExist($cachePath);
             self::assertSame([ConfigClearCommand::class, MigrateCommand::class, RestartCommand::class], $command->calls);
             self::assertFileDoesNotExist(base_path('upgrading.lock'));
