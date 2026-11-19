@@ -4,7 +4,7 @@
 #   1. 源码内置 /var/www/lsky，挂载 /var/www/html 兼容 halcyonazure 标准（空目录自动拷贝）
 #   2. APP_LICENSE_KEY 不再必填（本地授权，直接 true）
 #   3. .dockerignore 剔除源码包冗余（测试/IDE/前端源码/日志），镜像大小可控
-#   4. 构建全离线（vendor 已随源码包含，无需 composer 联网）
+#   4. vendor 已随源码包含，无需 composer 联网
 
 FROM php:8.4.27-fpm
 
@@ -13,11 +13,12 @@ RUN php -r 'if (PHP_VERSION !== "8.4.27") { fwrite(STDERR, "Expected PHP 8.4.27,
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Shanghai
+ENV NGINX_VERSION=1.31.9
 
 # ---- 系统依赖（官方全量：服务 + 图片库 + 编译工具链）----
 RUN apt-get update && apt-get install -y \
-    wget gnupg curl zip unzip git cron \
-    supervisor nginx sqlite3 netcat-openbsd procps htop \
+    wget gnupg curl ca-certificates zip unzip git cron \
+    supervisor sqlite3 netcat-openbsd procps htop \
     build-essential pkg-config autoconf automake libtool \
     imagemagick libmagickwand-dev libmagickcore-dev \
     libvips-dev libvips-tools libvips42 \
@@ -27,6 +28,27 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev libicu-dev libxslt1-dev libffi-dev libsqlite3-dev \
     fonts-dejavu-core fontconfig \
     && rm -rf /var/lib/apt/lists/*
+
+# Use the official mainline package containing the HTTP/2 security fixes.
+RUN set -eux; \
+    curl -fsSL https://nginx.org/keys/nginx_signing.key -o /tmp/nginx_signing.key; \
+    mkdir -m 700 /tmp/nginx-gnupg; \
+    gpg --homedir /tmp/nginx-gnupg --batch --import /tmp/nginx_signing.key; \
+    gpg --homedir /tmp/nginx-gnupg --batch --export \
+        573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62 \
+        8540A6F18833A80E9C1653A42FD21310B49F6B46 \
+        9E9BE90EACBCDE69FE9B204CBCDCD8A38D88A2B3 \
+        > /usr/share/keyrings/nginx-archive-keyring.gpg; \
+    test -s /usr/share/keyrings/nginx-archive-keyring.gpg; \
+    . /etc/os-release; \
+    printf 'deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] https://nginx.org/packages/mainline/debian %s nginx\n' "$VERSION_CODENAME" \
+        > /etc/apt/sources.list.d/nginx.list; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends "nginx=${NGINX_VERSION}-1~${VERSION_CODENAME}"; \
+    sed -i 's/^user[[:space:]]\+nginx;/user www-data;/' /etc/nginx/nginx.conf; \
+    grep -qx 'user www-data;' /etc/nginx/nginx.conf; \
+    nginx -v 2>&1 | grep -Fx "nginx version: nginx/${NGINX_VERSION}"; \
+    rm -rf /var/lib/apt/lists/* /tmp/nginx-gnupg /tmp/nginx_signing.key
 
 # ---- PHP 扩展（官方全量：数据库/GD/ZIP/BCMath/OPcache/EXIF/Intl/XSL/PCNTL/FTP/FFI + Imagick/Redis/Vips）----
 RUN docker-php-ext-configure gd \
@@ -41,7 +63,7 @@ RUN docker-php-ext-configure gd \
 # ---- 配置：php.ini / fpm / nginx / supervisor（沿用官方 docker/config）----
 COPY docker/config/php.ini /usr/local/etc/php/conf.d/custom.ini
 COPY docker/config/www.conf /usr/local/etc/php-fpm.d/www.conf
-COPY docker/config/nginx.conf /etc/nginx/sites-available/default
+COPY docker/config/nginx.conf /etc/nginx/conf.d/default.conf
 COPY docker/config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # 删除默认 Docker fpm 配置避免冲突

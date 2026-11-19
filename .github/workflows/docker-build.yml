@@ -155,6 +155,30 @@ jobs:
             type=gha,scope=${{ env.BUILD_CACHE_SCOPE }}
           cache-to: type=gha,mode=max,scope=${{ env.BUILD_CACHE_SCOPE }}-${{ matrix.arch }}
 
+      - name: Verify NGINX and PHP-FPM
+        run: |
+          set -euo pipefail
+          image="${REGISTRY}/${IMAGE_NAME}:sha-${GITHUB_SHA}-${{ matrix.arch }}"
+          docker pull "$image"
+          docker run --rm --entrypoint sh "$image" -ec '
+            nginx -v 2>&1 | grep -Fx "nginx version: nginx/$NGINX_VERSION"
+            mkdir -p /var/www/html/public /run/php
+            cp /var/www/lsky/public/nginx.conf /var/www/html/public/nginx.conf
+            printf "%s\n" "<?php echo \"nginx-php-ok\";" > /var/www/html/public/nginx-health.php
+            printf "%s\n" "nginx-static-ok" > /var/www/html/public/nginx-health.txt
+            nginx -t
+            php-fpm -F &
+            attempts=0
+            until [ -S /run/php/php8.4-fpm.sock ]; do
+              attempts=$((attempts + 1))
+              [ "$attempts" -lt 20 ] || exit 1
+              sleep 1
+            done
+            nginx
+            [ "$(curl -fsS http://127.0.0.1/nginx-health.php)" = "nginx-php-ok" ]
+            [ "$(curl -fsS http://127.0.0.1/nginx-health.txt)" = "nginx-static-ok" ]
+          '
+
   publish:
     name: Publish multi-architecture image
     needs: build
